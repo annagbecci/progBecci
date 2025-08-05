@@ -1,0 +1,17 @@
+# Django
+*.pyc
+__pycache__/
+db.sqlite3
+/static/
+/media/
+
+# VS Code o PyCharm
+.vscode/
+.idea/
+
+# Ambiente virtuale
+venv/
+.env
+
+# Configurazioni di sistema
+.DS_Store
