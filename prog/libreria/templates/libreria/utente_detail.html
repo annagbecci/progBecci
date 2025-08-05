@@ -1,0 +1,14 @@
+{% extends "w3base.html" %}
+
+{% block head %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href='{% static "/css/style.css" %}'>
+{% endblock %}
+
+{% block title %} {{ "Utente Detail View" }} {% endblock %}
+
+{% block content %}
+    <h2>I tuoi dati - {{ object.username }}</h2>
+    <ul><h3>Comune : {{ object.comune }}</h3></ul>
+    <ul><h3>Scambio anche in provincia : {{ object.inprovincia }}</h3></ul>
+{% endblock %}

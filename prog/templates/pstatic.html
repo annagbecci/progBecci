@@ -1,0 +1,13 @@
+{% extends "w3base.html" %}
+
+{% block head %}
+
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href='{% static "/css/style.css" %}'>
+{% endblock %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %}
+        <img src="{% static '/img/finding.png' %}" alt="In cerca del prossimo libro" class="w3-image">
+{% endblock %}

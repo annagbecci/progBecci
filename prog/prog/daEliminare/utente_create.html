@@ -1,0 +1,16 @@
+{% extends "w3base.html" %}
+
+{% block head %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href='{% static "/css/style.css" %}'>
+{% endblock %}
+
+{% block title %} {{ "Utente Create View" }} {% endblock %}
+
+{% block content %}
+    <h2>Crea il tuo profilo</h2>
+    <form method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Save">
+    </form>
+{% endblock %}

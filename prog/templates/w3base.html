@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}ProgBbbecci{% endblock %}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> <!-- Accesso allo styleshet CSS -->
+    <style>
+        body {
+            font-family: "Times New Roman", serif; /*CONTROLLA I FONT*/
+            padding-top: 60px;
+            min-height: 100vh; /* 100% della viewport height */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Fa partire il contenuto dall'alto. PROVA A TOGLIERLO QUANDO METTI LA ROBA VERA*/
+        }
+
+        .w3-content {
+          flex-grow: 1;
+          width: 100%;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: "Playfair Display", serif;
+            letter-spacing: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Navbar (fissa in alto) -->
+<div class="w3-top">
+  <div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:4px;">
+    <a href="{% url 'home_page' %}" class="w3-bar-item w3-button">LoOoOgOoOo</a>
+
+    <!-- Right-sided navbar links. Hide them on small screens -->
+    <div class="w3-right w3-hide-small">
+      <a href="{% url 'libreria:index' %}" class="w3-bar-item w3-button">Libreria</a>
+      <a href="#menu" class="w3-bar-item w3-button">Tasto2</a>
+      <a href="#contact" class="w3-bar-item w3-button">Accedi</a>
+    </div>
+  </div>
+</div>
+
+<!-- Header -->
+<!-- <header class="w3-content w3-wide" style="max-width:1600px;min-width:500px" id="home">
+  <div class="w3-padding-large">
+    <h1 class="w3-xxlarge">Qui ci posso mettere un header</h1>
+  </div>
+</header> -->
+
+<!-- Page content -->
+<!-- Questa parte ha un bel margine sia a destra che a sinistra-->
+<div class="w3-content" style="max-width:80%; padding-bottom:20px; padding-top:40px;">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<!-- Footer -->
+<footer class="w3-center w3-light-grey w3-padding-32" style="bottom: 0; width: 100%;">
+  <p>Powered by AnnaBbbecci</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+{% extends "w3base.html" %}
+
+{% block head %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href='{% static "/css/style.css" %}'>
+{% endblock %}
+
+{% block title %} {{ "Utente List View" }} {% endblock %}
+
+{% block content %}
+    {% for utente in object_list %}
+
+        <h3>Utente n.{{ utente.pk }} - {{ utente.username }}</h3>
+    {% endfor %}
+{% endblock %}
