@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="it">
+
+{% if user.is_authenticated %}
+    <form method="post" action="{% url 'logout' %}" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" class="w3-bar-item w3-button">
+            Logout
+        </button>
+    </form>
+{% else %}
+    <a href="{% url 'login' %}" class="w3-bar-item w3-button">Login</a>
+{% endif %}

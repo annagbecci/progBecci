@@ -1,18 +1,37 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
+
 <head>
-    <title>{% block title %}ProgBbbecci{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <title>{% block title %}{% endblock %}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> <!-- Accesso allo styleshet CSS -->
+
+    <!--link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin-->
+
+    <!-- Accesso allo styleshet CSS -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+    <!-- Bootstrap 4.6 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Link a Font Awesome dal CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Il mio file .css -->
+    <link rel="stylesheet" href="{%static 'css/style.css' %}">
+
     <style>
         body {
-            font-family: "Times New Roman", serif; /*CONTROLLA I FONT*/
-            padding-top: 60px;
+            font-family: "Times New Roman", serif;
+            font-size: 1.2em;
+            padding-top: 80px;
             min-height: 100vh; /* 100% della viewport height */
             display: flex;
             flex-direction: column;
-            justify-content: flex-start; /* Fa partire il contenuto dall'alto. PROVA A TOGLIERLO QUANDO METTI LA ROBA VERA*/
         }
 
         .w3-content {
@@ -22,45 +41,79 @@
 
         h1, h2, h3, h4, h5, h6 {
             font-family: "Playfair Display", serif;
-            letter-spacing: 5px;
+            letter-spacing: 3px;
         }
     </style>
 </head>
 
 <body>
 
-<!-- Navbar (fissa in alto) -->
-<div class="w3-top">
-  <div class="w3-bar w3-white w3-padding w3-card" style="letter-spacing:4px;">
-    <a href="{% url 'home_page' %}" class="w3-bar-item w3-button">LoOoOgOoOo</a>
+    <!-- Navbar (fissa in alto) -->
+    <div class="w3-top">
+      <div class="w3-bar w3-white w3-padding-16 w3-card">
+        <a href="{% url 'home_page' %}" class="w3-bar-item w3-button">
+            <img src="{% static 'img/homelogo.png' %}" title="Home page" style="height:60px; margin: 0 5px;">Home</a>
 
-    <!-- Right-sided navbar links. Hide them on small screens -->
-    <div class="w3-right w3-hide-small">
-      <a href="{% url 'libreria:index' %}" class="w3-bar-item w3-button">Libreria</a>
-      <a href="#menu" class="w3-bar-item w3-button">Tasto2</a>
-      <a href="#contact" class="w3-bar-item w3-button">Accedi</a>
+        <!-- Right-sided navbar links. Compressa per piccoli e medi schermi. -->
+        <div class="w3-right w3-hide-small w3-hide-medium" style="margin-left:auto;">
+          {% include 'navbar_searchbar.html' %}
+
+          <a href="{% url 'libreria:index' %}" class="w3-bar-item w3-button" id="libreria">Libreria</a>
+          {% include 'navbar_login.html' %}
+        </div>
+
+        <!-- Pulsante menu su schermi piccoli -->
+        <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large"
+           onclick="toggleMenu()">☰
+        </a>
+      </div>
     </div>
-  </div>
-</div>
 
-<!-- Header -->
-<!-- <header class="w3-content w3-wide" style="max-width:1600px;min-width:500px" id="home">
-  <div class="w3-padding-large">
-    <h1 class="w3-xxlarge">Qui ci posso mettere un header</h1>
-  </div>
-</header> -->
+    <!-- Menu mobile -->
+    <div id="menuMobile" class="w3-bar-block w3-white w3-hide w3-hide-large slide-down" style="padding-top: 30px">
+        {% include 'navbar_searchbar.html' %}
+        <a href="{% url 'libreria:index' %}" class="w3-bar-item w3-button" id="libreria">Libreria</a>
+        {% include 'navbar_login.html' %}
+    </div>
 
-<!-- Page content -->
-<!-- Questa parte ha un bel margine sia a destra che a sinistra-->
-<div class="w3-content" style="max-width:80%; padding-bottom:20px; padding-top:40px;">
-    {% block content %}
-    {% endblock %}
-</div>
+    <script>
+    function toggleMenu() {
+      var menu = document.getElementById("menuMobile");
 
-<!-- Footer -->
-<footer class="w3-center w3-light-grey w3-padding-32" style="bottom: 0; width: 100%;">
-  <p>Powered by AnnaBbbecci</p>
-</footer>
+      if (menu.classList.contains("w3-hide")) {
+        menu.classList.remove("w3-hide");
+        setTimeout(() => menu.classList.add("show"), 10);
+      }
+      else {
+        menu.classList.remove("show");
+        setTimeout(() => menu.classList.add("w3-hide"), 300);
+      }
+    }
+    </script>
+
+    <!-- Page content -->
+    <div class="w3-content" style="max-width:80%; padding-bottom:20px; padding-top:40px;">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="w3-center w3-light-grey w3-padding-32" style="bottom: 0; width: 100%;">
+      <p>Powered by AnnaBbbecci</p>
+    </footer>
+
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap Bundle JS (include Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Questo script mi permette di aprire i modal -->
+    <script>
+      $(document).ready(function() {
+        $("#modal").modal('show');
+      });
+    </script>
 
 </body>
 </html>

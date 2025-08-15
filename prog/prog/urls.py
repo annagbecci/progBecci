@@ -16,12 +16,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path, include
+from . import views
 from .views import *
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    re_path(r"^$|^/$|^home/$", home, name='home_page'),
-    path("stat/", pagewstat, name='stat'),
-    path('libreria/', include('libreria.urls')),
+    path("admin/", admin.site.urls),
+    re_path(r"^$|^/$|^home/$", home, name="home_page"),
+    path("cerca/", views.risultati_ricerca, name="risultati_ricerca"),
+    path("situation/", my_situation, name='stat'),  # Questo è da togliere
+    path("libreria/", include('libreria.urls')),
+    path("register/", UserCreateView.as_view(), name="register"),
+    path("login/", auth_views.LoginView.as_view(), name="login"),
+    path("logout/", auth_views.LogoutView.as_view(), name="logout"),
+    path("libri/categoria/<int:tag_id>/", views.libri_categoria_detail, name="libri_categoria_detail"),
 ]
 #  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

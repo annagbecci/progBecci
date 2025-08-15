@@ -4,18 +4,22 @@ from django.views import View
 from django.views.generic import DetailView, ListView
 
 # from .forms import UtenteCrispyForm, LinkFormSet
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.db.models import Q
 
 
+@login_required
 def index(request):
-    return render(request,
-                  template_name="libreria/libwelcome.html",
-                  context={"title": "Home della tua libreria"})
+    user = get_object_or_404(Utente, pk=request.user.pk)
+    title = "Libreria di " + user.username
+    ctx = {"title":  title}
+    return render(request, "libreria/libwelcome.html", ctx)
 
 
+"""
 class UtenteCrispyCreateView(View):
     # Uso View e non CreateView perché devo gestire più form (utente + link) insieme.
     def get(self, request):  # mostra il form vuoto
@@ -43,6 +47,7 @@ class UtenteCrispyCreateView(View):
             "utente_form": utente_form,
             "link_formset": link_formset
         })
+"""
 
 
 class UtenteDetail(DetailView):

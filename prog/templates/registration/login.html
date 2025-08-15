@@ -1,0 +1,22 @@
+{% extends "w3base.html" %}
+{% load crispy_forms_filters %}
+
+{% block title %} {{ "Pagina di Login" }} {% endblock %}
+
+{% block content %}
+    <h2>Accedi al tuo profilo</h2>
+
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ form | crispy }}
+        <input type="submit" class="btn btn-success" value="Accedi">
+    </form>
+    <br>
+    {% if "notok" in request.GET.auth %}
+        <div class="alert alert-danger" role="alert">
+            Non hai i permessi necessari per accedere a quella pagina.
+        </div>
+    {% endif %}
+
+    <h4>Non hai ancora un profilo? <a href="{% url 'register' %}" class="w3-button, link-classico">Registrati qui!</a></h4>
+{% endblock %}

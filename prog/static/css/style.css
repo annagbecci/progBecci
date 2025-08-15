@@ -1,0 +1,122 @@
+.grande {
+  font-size: 1.2em;
+  line-height: 1.6;
+  margin-bottom: 1em;
+}
+
+.link-classico {
+  color: blue;
+  text-decoration: underline;
+}
+
+/* Impostazioni per la navigation bar ed i suoi item */
+.w3-bar .w3-bar-item {
+    font-size: 18px;
+    letter-spacing: 3px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    height: 60px;
+}
+
+.w3-bar-block .w3-bar-item {
+    font-size: 18px;
+    letter-spacing: 3px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    height: 60px;
+}
+
+.search-container input[type=text] {
+  padding: 15px;
+  margin: 0;
+  background: #dceef3;
+  font-size: 17px;
+  border: none;
+  height: 60px;
+  width: calc(100% - 60px);
+}
+
+.search-container button {
+  float: right;
+  padding: 5px;
+  margin: 0;
+  background: #8dc8d8;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+  height: 60px;
+  width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-container button:hover {
+  background: #72bbce;
+}
+
+/* Impostazioni per le card */
+.w3-row-padding {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px; /* Spazio tra le card */
+}
+
+.card-container { /* desktop */
+    flex: 1 1 calc(25% - 16px); /* 4 card per riga considerando il gap */
+    display: flex;
+}
+
+@media (max-width: 992px) { /* tablet */
+    .card-container {
+        flex: 1 1 calc(33.33% - 16px); /* 3 card per riga */
+    }
+}
+
+@media (max-width: 600px) { /* mobile */
+    .card-container {
+        flex: 1 1 100%; /* 1 card per riga */
+    }
+}
+
+.card-equal {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+/* Impostazioni per le recensioni */
+.star {
+    padding: 3px;
+    font-size: 1.5rem;
+    color: lightgray;
+    position: relative;
+    display: inline-block;
+}
+
+.star.full {
+    color: gold;
+}
+
+.star.half {
+    background: linear-gradient(90deg, gold 50%, lightgray 50%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: gold;
+}
+
+/* Animazione slide-down del menù su schermo mobile */
+.slide-down {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.slide-down.show {
+  max-height: 200px; /* altezza massima menu */
+}
+

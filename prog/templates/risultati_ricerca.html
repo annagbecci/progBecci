@@ -1,0 +1,30 @@
+{% extends "w3base.html" %}
+
+{% block title %} Ricerca {%  endblock %}
+
+{% block content %}
+    <h2>Hai cercato "{{ query }}"</h2>
+
+    {% if libri or autori %}
+        {% if libri %}
+            <h3>Risultati in Libri</h3>
+            <ul>
+                {% for libro in libri %}
+                    <li>{{ libro.titolo }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if autori %}
+            <h3>Risultati in Autori</h3>
+            <ul>
+                {% for autore in autori %}
+                    <li>{{ autore.nome }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% else %}
+        <p>Nessun risultato trovato.</p>
+    {% endif %}
+
+{% endblock %}

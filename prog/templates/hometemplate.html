@@ -1,0 +1,103 @@
+{% extends "w3base.html" %}
+
+{% block title %} {{ title }} {%  endblock %}
+
+{% block content %}
+
+    <!-- La home page mostra i libri presenti in db, divisi per categoria (tags) -->
+    <div class="w3-container">
+        {% for categoria in categorie %}
+            <div class="w3-margin-top">
+                <h2><a href="{% url 'libri_categoria_detail' categoria.id %}" class="w3-text-blue">
+                        {{ categoria.nome }}</a></h2>
+                <div class="w3-row-padding">
+                    {% for libro in categoria.libri %}
+                        <!-- 4 card per riga su schermo l, 3 su schermo m e 1 su schermo s -->
+                        <!--div class="w3-col l3 m4 s12 w3-margin-bottom"-->
+                        <div class="card-container">
+                            <div class="w3-card-2 card-equal" style="text-align:center;">
+                                <header class="w3-container w3-light-grey" style="padding: 15px;">
+                                    <h3>{{ libro.titolo }}</h3>
+                                </header>
+                                <div class="w3-container" style="padding: 15px;">
+                                    {% for autore in libro.autori.all %}
+                                        <h5>{{ autore.nome }}{% if not forloop.last %}, {% endif %}</h5>
+                                    {% endfor %}
+                                    <hr>
+                                    <p class="grande" style="text-align: justify;">
+                                        {{ libro.trama|truncatechars:120 }}</p>
+                                </div>
+
+                                <!-- Mostra una valutazione su 5 stelle -->
+                                <div class="star-rating" data-rating="{{ libro.mediavoti|floatformat:1 }}">
+                                  {% for i in "12345" %}
+                                    <span class="star">★</span>
+                                  {% endfor %}
+                                     ({{ libro.numerovoti }})
+                                </div>
+
+                                <script>
+                                document.addEventListener("DOMContentLoaded", function() {
+                                  document.querySelectorAll('.star-rating').forEach(function(ratingElem) {
+                                    const rating = parseFloat(ratingElem.dataset.rating) || 0;
+                                    const fullStars = Math.floor(rating);
+                                    const hasHalf = rating % 1 >= 0.25 && rating % 1 < 0.75;
+                                    const roundUp = rating % 1 >= 0.75;
+
+                                    const stars = ratingElem.querySelectorAll('.star');
+
+                                    stars.forEach((star, index) => {
+                                      if (index < fullStars) {
+                                        star.classList.add('full');
+                                      } else if (index === fullStars && hasHalf) {
+                                        star.classList.add('half');
+                                      } else if (index === fullStars && roundUp) {
+                                        star.classList.add('full');
+                                      }
+                                    });
+                                  });
+                                });
+                                </script>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if user.is_authenticated and "ok" in request.GET.login %}
+        <div id="modal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h5 class="modal-title"><strong>Ciao {{ user.username }}</strong></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <p class="grande">Il login è andato a buon fine!</p>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-danger" data-dismiss="modal">Chiudi</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function() {
+                $("#modal").modal('show');
+            });
+        </script>
+
+    {% endif %}
+
+{% endblock %}

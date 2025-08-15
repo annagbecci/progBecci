@@ -34,7 +34,6 @@ class Link(models.Model):
 class Autore(models.Model):
     nome = models.CharField(max_length=100)
     biografia = models.TextField(blank=True, null=True)
-    utente_collegato = models.OneToOneField('Utente', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.nome
@@ -45,14 +44,12 @@ class Autore(models.Model):
 
 class Utente(AbstractUser):
     links = models.ManyToManyField('Link', blank=True)
-    tipologiautente = models.CharField(max_length=20,
-                                       choices=[('lettore', 'Lettore'), ('autore', 'Autore')],
-                                       default='lettore')
     immagine = models.ImageField(upload_to='profile_pics/', blank=True, null=True, default='iconadefault.jpg')
     comune = models.ForeignKey(Comune, on_delete=models.CASCADE, blank=True, null=True)
     # Nel form fai in modo che il comune sia compilato sempre: necessario per lo scambio
     inprovincia = models.BooleanField(default=False)  # Se impostato a True, l'utente scambia in tutta la provincia
     tags = models.ManyToManyField('Tag')
+    autore = models.OneToOneField(Autore, on_delete=models.SET_NULL, blank=True, null=True)
 
     class Meta:
         verbose_name_plural = 'Utenti'
@@ -68,6 +65,10 @@ class Libro(models.Model):
 
     class Meta:
         verbose_name_plural = 'Libri'
+
+    def __str__(self):
+        # intestazione = self.titolo
+        return self.titolo
 
 
 class Recensione(models.Model):

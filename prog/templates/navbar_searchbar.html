@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<div class="search-container w3-bar-item">
+    <form action="{% url 'risultati_ricerca' %}" method="get">
+        <input type="text" placeholder="Cerca qui libri o autori" name="search">
+        <button type="submit"><i class="fas fa-search"></i></button>
+    </form>
+</div>

@@ -3,6 +3,9 @@ from .models import Utente, Link
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django.forms import modelformset_factory
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import Group
+from django.contrib.auth import get_user_model
 
 
 class UtenteCrispyForm(forms.ModelForm):
@@ -45,4 +48,21 @@ class LinkForm(forms.ModelForm):
         }
 
 
-LinkFormSet = forms.modelformset_factory(Link, form=LinkForm, extra=3, can_delete=True)
+# LinkFormSet = forms.modelformset_factory(Link, form=LinkForm, extra=3, can_delete=True)
+
+user = get_user_model()
+
+
+class CustomUserCreationForm(UserCreationForm):
+    class Meta:
+        model = user
+        fields = ['username', 'email', 'password1', 'password2', 'tags']
+
+
+class CreaUtenteLettore(CustomUserCreationForm):
+
+    def save(self, commit=True):
+        user = super().save(commit)
+        g = Group.objects.get(name='Lettori')
+        g.user_set.add(user)
+        return user

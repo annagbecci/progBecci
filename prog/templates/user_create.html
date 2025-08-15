@@ -1,0 +1,14 @@
+{% extends "w3base.html" %}
+{% load crispy_forms_filters %}
+
+{% block title %} {{ "Creazione profilo" }} {% endblock %}
+
+{% block content %}
+    <h2>Crea il tuo profilo</h2>
+
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ form | crispy }}
+        <input type="submit" class="btn btn-success" value="Registrati!">
+    </form>
+{% endblock %}

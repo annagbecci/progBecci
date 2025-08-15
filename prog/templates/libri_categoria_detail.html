@@ -1,0 +1,56 @@
+{% extends "w3base.html" %}
+
+{% block title %} Mostra categoria {%  endblock %}
+
+{% block content %}
+    <div class="w3-container">
+        {% for libro in libri %}
+            <div class="w3-margin-top w3-padding-top-24">
+                <div class="w3-card-2 card-equal" style="text-align:center;">
+                    <header class="w3-container w3-light-grey" style="padding: 15px;">
+                        <h3>{{ libro.titolo }}</h3>
+                    </header>
+                    <div class="w3-container" style="padding: 15px;">
+                        {% for autore in libro.autori.all %}
+                            <h5>{{ autore.nome }}{% if not forloop.last %}, {% endif %}</h5>
+                        {% endfor %}
+                        <hr>
+                        <p class="grande" style="text-align: justify;">
+                            {{ libro.trama|truncatechars:450 }}</p>
+                    </div>
+
+                    <!-- Mostra una valutazione su 5 stelle -->
+                    <div class="star-rating" data-rating="{{ libro.mediavoti|floatformat:1 }}">
+                        {% for i in "12345" %}
+                            <span class="star">★</span>
+                        {% endfor %}
+                        ({{ libro.numerovoti }})
+                    </div>
+
+                    <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        document.querySelectorAll('.star-rating').forEach(function(ratingElem) {
+                            const rating = parseFloat(ratingElem.dataset.rating) || 0;
+                            const fullStars = Math.floor(rating);
+                            const hasHalf = rating % 1 >= 0.25 && rating % 1 < 0.75;
+                            const roundUp = rating % 1 >= 0.75;
+
+                            const stars = ratingElem.querySelectorAll('.star');
+
+                            stars.forEach((star, index) => {
+                                if (index < fullStars) {
+                                    star.classList.add('full');
+                                } else if (index === fullStars && hasHalf) {
+                                    star.classList.add('half');
+                                } else if (index === fullStars && roundUp) {
+                                    star.classList.add('full');
+                                }
+                            });
+                        });
+                    });
+                    </script>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
