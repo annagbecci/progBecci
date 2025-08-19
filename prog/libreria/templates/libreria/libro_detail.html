@@ -1,0 +1,76 @@
+{% extends "w3base.html" %}
+{% load static %}
+
+{% block title %} {{ object.titolo }} {% endblock %}
+
+{% block content %}
+    <h2>{{ object.titolo }}</h2>
+
+    {% for autore in libro.autori.all %}
+        <h4>Scritto da
+            <a href="{% url 'libreria:autore_detail' autore.pk %}">
+                {{ autore.nome }}</a>{% if not forloop.last %}, {% endif %}
+        </h4>
+    {% endfor %}
+
+    <div class="star-rating grande" data-rating="{{ libro.mediavoti|floatformat:1 }}">
+        {% for i in "12345" %}
+            <span class="star">★</span>
+        {% endfor %}
+
+        <a href="#rece">({{ libro.numerovoti }} recensioni)</a>
+         - <i class="fas fa-pen"></i>
+        <a href="{% url 'libreria:nuova_recensione' libro.pk %}">Lascia la tua recensione</a>
+    </div>
+    <script src="{% static 'js/star_script.js' %}"></script>
+
+    <h4><i class="far fa-heart" style="padding: 3px"></i>Aggiungilo alla lista desideri</h4>
+    <h4><i class="far fa-handshake"></i>Aggiungilo ai libri che vuoi scambiare</h4>
+
+    <br>
+    <div class="w3-bar" style="background: #FEC5BB">
+        <div class="w3-bar-item"><h4>La trama</h4></div>
+    </div>
+    <div style="padding: 3%">
+        <p class="grande" style="text-align: justify;">{{ libro.trama }}</p>
+    </div>
+
+    <div class="w3-bar" style="background-color:#FEC5BB">
+        <div class="w3-bar-item" id="rece"><h4>Le Recensioni</h4></div>
+    </div>
+    <div style="padding: 3%">
+        {% if recensioni %}
+            {% for recensione in recensioni %}
+                <div class="w3-card-2 card-equal">
+
+                    <header class="w3-container w3-light-grey"
+                            style="padding: 15px; display: flex;">
+
+                        <img src="{{ recensione.nomeutente.immagine_url }}"
+                             alt="Immagine profilo" class="avatar">
+
+                        <h3 style="margin-left: 10px;">
+                            {{ recensione.nomeutente.username }},
+                            {{ recensione.data_aggiunta|date:"d/m/Y" }}
+                        </h3>
+                    </header>
+                    <div class="w3-container" style="padding: 15px;">
+                        <div class="star-rating" data-rating="{{ recensione.voto|floatformat:1 }}">
+                            <strong class="grande">Valutazione: </strong>
+                            {% for i in "12345" %}
+                                <span class="star">★</span>
+                            {% endfor %}
+                        </div>
+                        <script src="{% static 'js/star_script.js' %}"></script>
+                        <hr>
+                        {{ recensione.commento }}
+                    </div>
+                </div>
+                <br>
+            {% endfor %}
+        {% else %}
+            <div class="grande">Ancora nessun commento per questo libro.</div>
+        {% endif %}
+    </div>
+
+{% endblock %}

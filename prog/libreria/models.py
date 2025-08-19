@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import AbstractUser
+from django.templatetags.static import static
 
 
 class Tag(models.Model):
@@ -44,7 +45,7 @@ class Autore(models.Model):
 
 class Utente(AbstractUser):
     links = models.ManyToManyField('Link', blank=True)
-    immagine = models.ImageField(upload_to='profile_pics/', blank=True, null=True, default='iconadefault.jpg')
+    immagine = models.ImageField(upload_to='profili/', blank=True, null=True)
     comune = models.ForeignKey(Comune, on_delete=models.CASCADE, blank=True, null=True)
     # Nel form fai in modo che il comune sia compilato sempre: necessario per lo scambio
     inprovincia = models.BooleanField(default=False)  # Se impostato a True, l'utente scambia in tutta la provincia
@@ -54,10 +55,16 @@ class Utente(AbstractUser):
     class Meta:
         verbose_name_plural = 'Utenti'
 
+    @property
+    def immagine_url(self):
+        if self.immagine:
+            return self.immagine.url
+        return static('img/iconadefault.jpg')
+
 
 class Libro(models.Model):
     titolo = models.CharField(max_length=100)
-    autori = models.ManyToManyField('Autore')
+    autori = models.ManyToManyField('Autore', related_name='libri')
     tags = models.ManyToManyField('Tag')
     trama = models.TextField(null=True, blank=True)
     numerovoti = models.IntegerField(default=0)
@@ -70,9 +77,14 @@ class Libro(models.Model):
         # intestazione = self.titolo
         return self.titolo
 
+    def aggiorna_valutazione(self, voto: int):
+        self.numerovoti += 1
+        self.mediavoti = ((self.mediavoti * (self.numerovoti - 1)) + voto) / self.numerovoti
+        self.save()
+
 
 class Recensione(models.Model):
-    idlibro = models.ForeignKey(Libro, on_delete=models.PROTECT)
+    idlibro = models.ForeignKey(Libro, on_delete=models.PROTECT, related_name="recensioni")
     nomeutente = models.ForeignKey(Utente, on_delete=models.PROTECT)
     voto = models.IntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(5)])
     commento = models.TextField(blank=True, null=True)

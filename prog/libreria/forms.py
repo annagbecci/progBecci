@@ -1,5 +1,5 @@
 from django import forms
-from .models import Utente, Link
+from .models import Utente, Link, Recensione
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django.forms import modelformset_factory
@@ -66,3 +66,19 @@ class CreaUtenteLettore(CustomUserCreationForm):
         g = Group.objects.get(name='Lettori')
         g.user_set.add(user)
         return user
+
+
+class RecensioneForm(forms.ModelForm):
+
+    class Meta:
+        model = Recensione
+        fields = ['voto', 'commento']
+        widgets = {
+            'voto': forms.HiddenInput(),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.add_input(Submit('submit', 'Invia'))

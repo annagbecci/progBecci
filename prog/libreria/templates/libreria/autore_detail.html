@@ -1,0 +1,22 @@
+{% extends "w3base.html" %}
+{% load static %}
+
+
+{% block title %} {{ object.nome }} {% endblock %}
+
+{% block content %}
+    <h2>{{ object.nome }}</h2>
+    {% if object.biografia %}
+        <p style="text-align: justify;">{{ object.biografia }}</p>
+    {% endif %}
+    <br>
+    <h3>I libri di {{ object.nome }} presenti nel nostro database:</h3>
+    <div class="w3-container">
+        {% for libro in object.libri.all %}
+            <div class="w3-margin-top w3-padding-top-24">
+                {% include "bookcard.html" %}
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

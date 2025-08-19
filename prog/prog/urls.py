@@ -19,6 +19,8 @@ from django.urls import path, re_path, include
 from . import views
 from .views import *
 from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -31,4 +33,5 @@ urlpatterns = [
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("libri/categoria/<int:tag_id>/", views.libri_categoria_detail, name="libri_categoria_detail"),
 ]
-#  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

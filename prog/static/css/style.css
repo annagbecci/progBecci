@@ -90,9 +90,9 @@
 }
 
 /* Impostazioni per le recensioni */
-.star {
-    padding: 3px;
-    font-size: 1.5rem;
+.star, .star-input {
+    padding: 1px;
+    font-size: 1.8rem;
     color: lightgray;
     position: relative;
     display: inline-block;
@@ -109,6 +109,15 @@
     color: gold;
 }
 
+.star-input .star.selected, .star-input .star.hover {
+    color: gold;
+}
+
+textarea {
+    width: 100%;
+    resize: vertical;
+}
+
 /* Animazione slide-down del menù su schermo mobile */
 .slide-down {
   max-height: 0;
@@ -120,3 +129,10 @@
   max-height: 200px; /* altezza massima menu */
 }
 
+/* Impostazioni per le immagine profilo piccole nelle card delle recensioni */
+.avatar {
+  width: 40px;        /* larghezza */
+  height: 40px;       /* altezza */
+  border-radius: 50%; /* rende l’immagine rotonda */
+  object-fit: cover;  /* mantiene il ritaglio proporzionato */
+}

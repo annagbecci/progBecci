@@ -1,0 +1,36 @@
+{% extends "w3base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
+
+
+{% block title %}Nuova recensione{% endblock %}
+
+{% block content %}
+    <h3>Lascia una recensione</h3>
+
+    <form method="post" id="review-form">
+      {% csrf_token %}
+
+        {{ form.voto }}
+        <div class="form-group" style="display: flex; align-items: center; gap: 10px;">
+            <span>Voto*:</span>
+            <div class="star-input">
+                {% for i in "12345" %}
+                    <span class="star" data-value="{{ forloop.counter }}">★</span>
+                {% endfor %}
+            </div>
+        </div>
+
+        {{ form.commento|as_crispy_field }}
+
+        <button type="submit" class="btn btn-primary">Invia recensione</button>
+    </form>
+
+
+    <script src="{% static 'js/star_recensioni.js' %}"></script>
+
+
+{% endblock %}
+
+

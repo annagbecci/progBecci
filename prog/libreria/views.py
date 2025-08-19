@@ -1,7 +1,9 @@
+from braces.views import LoginRequiredMixin
+
 from libreria.models import *
 from .forms import *
 from django.views import View
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, CreateView
 
 # from .forms import UtenteCrispyForm, LinkFormSet
 from django.shortcuts import render, redirect, get_object_or_404
@@ -63,3 +65,39 @@ class UtenteList(ListView):
 class AutoreList(ListView):
     model = Autore
     template_name = 'libreria/autore_list.html'
+
+
+class AutoreDetail(DetailView):
+    model = Autore
+    template_name = 'libreria/autore_detail.html'
+
+
+class LibroDetail(DetailView):
+    model = Libro
+    template_name = 'libreria/libro_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        libro = self.object
+        recensioni = libro.recensioni.filter(commento__isnull=False).exclude(commento="")
+        context["recensioni"] = recensioni
+        return context
+
+
+class RecensioneCreate(LoginRequiredMixin, CreateView):
+    model = Recensione
+    form_class = RecensioneForm
+    template_name = 'libreria/recensione_form.html'
+
+    def form_valid(self, form):
+        form.instance.nomeutente = self.request.user
+        libro = Libro.objects.get(pk=self.kwargs['pk'])
+        form.instance.idlibro = libro
+        response = super().form_valid(form)
+
+        libro.aggiorna_valutazione(form.instance.voto)
+
+        return response
+
+    def get_success_url(self):
+        return reverse_lazy('libreria:libro_detail', kwargs={'pk': self.kwargs['pk']})

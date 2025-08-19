@@ -1,0 +1,31 @@
+{% load static %}
+
+<div class="w3-card-2 card-equal" style="text-align:center;">
+    <header class="w3-container w3-light-grey" style="padding: 15px;">
+        <h3>
+            <a href="{%  url "libreria:libro_detail" libro.pk %}">{{ libro.titolo }}</a>
+        </h3>
+    </header>
+    <div class="w3-container" style="padding: 15px;">
+        {% for autore in libro.autori.all %}
+            <h5>
+                <a href="{% url 'libreria:autore_detail' autore.pk %}">
+                    {{ autore.nome }}</a>{% if not forloop.last %}, {% endif %}
+            </h5>
+        {% endfor %}
+        <hr>
+        <p class="grande" style="text-align: justify;">
+            {{ libro.trama|truncatechars:120 }}</p>
+    </div>
+
+    <!-- Mostra una valutazione su 5 stelle -->
+    <div class="star-rating" data-rating="{{ libro.mediavoti|floatformat:1 }}">
+        {% for i in "12345" %}
+            <span class="star">★</span>
+        {% endfor %}
+        ({{ libro.numerovoti }})
+    </div>
+    <script src="{% static 'js/star_script.js' %}"></script>
+
+</div>
+
