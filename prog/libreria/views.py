@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.db.models import Q
+from django.contrib import messages
 
 
 @login_required
@@ -80,7 +81,16 @@ class LibroDetail(DetailView):
         context = super().get_context_data(**kwargs)
         libro = self.object
         recensioni = libro.recensioni.filter(commento__isnull=False).exclude(commento="")
-        context["recensioni"] = recensioni
+        context["recensioni"] = recensioni.order_by("data_aggiunta").reverse
+
+        if self.request.user.is_authenticated:
+            context["in_lista_desideri"] = ListaDesideri.objects.filter(
+                idlibro=self.object,
+                nomeutente=self.request.user
+            ).exists()
+        else:
+            context["in_lista_desideri"] = False
+
         return context
 
 
@@ -101,3 +111,28 @@ class RecensioneCreate(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy('libreria:libro_detail', kwargs={'pk': self.kwargs['pk']})
+
+
+@login_required
+def Modifica_Lista_Desideri(request, pk):
+    libro = get_object_or_404(Libro, pk=pk)
+    utente = request.user
+
+    obj = ListaDesideri.objects.filter(idlibro=libro, nomeutente=utente).first()
+    if obj:
+        obj.delete()
+        messages.info(request, "Libro rimosso dalla lista desideri.")
+    else:
+        ListaDesideri.objects.create(idlibro=libro, nomeutente=utente)
+        messages.success(request, "Libro aggiunto alla lista desideri!")
+
+    return redirect('libreria:libro_detail', pk=pk)
+
+
+class ListaDesideriListView(LoginRequiredMixin, ListView):
+    model = ListaDesideri
+    template_name = "libreria/listadesideri.html"
+    context_object_name = 'libri'
+
+    def get_queryset(self):
+        return ListaDesideri.objects.filter(nomeutente=self.request.user).select_related('idlibro')

@@ -24,8 +24,72 @@
     </div>
     <script src="{% static 'js/star_script.js' %}"></script>
 
-    <h4><i class="far fa-heart" style="padding: 3px"></i>Aggiungilo alla lista desideri</h4>
+    <!-- Link per modificare la lista desideri -->
+    <a href="{% url 'libreria:modifica_ld' pk=object.pk %}">
+      {% if in_lista_desideri %}
+          <h4><i class="fas fa-heart text-red-500" style="padding: 3px"></i>Libro presente nella tua lista desideri</h4>
+      {% else %}
+          <h4><i class="far fa-heart" style="padding: 3px; color:black"></i>Aggiungilo alla tua lista desideri</h4>
+      {% endif %}
+    </a>
+
+    {% if messages %}
+    <div id="msg-modal" class="w3-modal" style="display:block;">
+      <div class="w3-modal-content w3-animate-top w3-card-4">
+        <header class="w3-container" style="background: #8DC8D8; padding:3%">
+          <span onclick="document.getElementById('msg-modal').style.display='none'"
+                class="w3-button w3-display-topright">&times;</span>
+          <h2>Notifica</h2>
+        </header>
+        <div class="w3-container grande" style="padding: 3%">
+          {% for message in messages %}
+            <p>{{ message }}</p>
+          {% endfor %}
+            <div class="w3-container" style="margin-top: 15px;">
+                <a href="{% url 'libreria:lista_desideri' %}">
+                    <button class="w3-button w3-round-large w3-right" style="background: #DCEEF3;">
+                        Vai alla lista desideri
+                    </button>
+                </a>
+            </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Link per modificare la lista di libri da scambiare -->
     <h4><i class="far fa-handshake"></i>Aggiungilo ai libri che vuoi scambiare</h4>
+    <a href="{% url 'libreria:modifica_ld' pk=object.pk %}">
+      {% if in_lista_desideri %}
+          <h4><i class="fas fa-heart text-red-500" style="padding: 3px"></i>Libro presente nella tua lista desideri</h4>
+      {% else %}
+          <h4><i class="far fa-heart" style="padding: 3px; color:black"></i>Aggiungilo alla tua lista desideri</h4>
+      {% endif %}
+    </a>
+
+    {% if messages %}
+    <div id="msg-modal" class="w3-modal" style="display:block;">
+      <div class="w3-modal-content w3-animate-top w3-card-4">
+        <header class="w3-container" style="background: #8DC8D8; padding:3%">
+          <span onclick="document.getElementById('msg-modal').style.display='none'"
+                class="w3-button w3-display-topright">&times;</span>
+          <h2>Notifica</h2>
+        </header>
+        <div class="w3-container grande" style="padding: 3%">
+          {% for message in messages %}
+            <p>{{ message }}</p>
+          {% endfor %}
+            <div class="w3-container" style="margin-top: 15px;">
+                <a href="{% url 'libreria:lista_desideri' %}">
+                    <button class="w3-button w3-round-large w3-right" style="background: #DCEEF3;">
+                        Vai alla lista desideri
+                    </button>
+                </a>
+            </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
 
     <br>
     <div class="w3-bar" style="background: #FEC5BB">
@@ -39,10 +103,13 @@
         <div class="w3-bar-item" id="rece"><h4>Le Recensioni</h4></div>
     </div>
     <div style="padding: 3%">
+        <h2 style="text-align: center">Valutazione media:
+            <strong>{{ libro.mediavoti|floatformat:2 }}/5</strong> in {{ libro.numerovoti }} recensioni
+        </h2>
         {% if recensioni %}
             {% for recensione in recensioni %}
+                <br>
                 <div class="w3-card-2 card-equal">
-
                     <header class="w3-container w3-light-grey"
                             style="padding: 15px; display: flex;">
 
@@ -66,7 +133,6 @@
                         {{ recensione.commento }}
                     </div>
                 </div>
-                <br>
             {% endfor %}
         {% else %}
             <div class="grande">Ancora nessun commento per questo libro.</div>

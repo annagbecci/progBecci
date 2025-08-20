@@ -1,0 +1,16 @@
+{% extends "w3base.html" %}
+{% load static %}
+
+{% block title %} La tua lista desideri {% endblock %}
+
+{% block content %}
+    <ul>
+        {% for item in libri %}
+            <div class="w3-margin-top w3-padding-top-24">
+                {% include "bookcard.html" with libro=item.idlibro %}
+            </div>
+        {% empty %}
+            <h2>La lista desideri è vuota.</h2>
+        {% endfor %}
+    </ul>
+{% endblock %}
