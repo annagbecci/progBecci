@@ -2,15 +2,11 @@ from braces.views import LoginRequiredMixin
 
 from libreria.models import *
 from .forms import *
-from django.views import View
 from django.views.generic import DetailView, ListView, CreateView
 
-# from .forms import UtenteCrispyForm, LinkFormSet
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
 from django.urls import reverse_lazy
-from django.db.models import Q
 from django.contrib import messages
 
 
@@ -91,6 +87,14 @@ class LibroDetail(DetailView):
         else:
             context["in_lista_desideri"] = False
 
+        if self.request.user.is_authenticated:
+            context["in_lista_scambio"] = ListaScambio.objects.filter(
+                idlibro=self.object,
+                nomeutente=self.request.user
+            ).exists()
+        else:
+            context["in_lista_scambio"] = False
+
         return context
 
 
@@ -114,17 +118,17 @@ class RecensioneCreate(LoginRequiredMixin, CreateView):
 
 
 @login_required
-def Modifica_Lista_Desideri(request, pk):
+def modifica_lista_desideri(request, pk):
     libro = get_object_or_404(Libro, pk=pk)
     utente = request.user
 
     obj = ListaDesideri.objects.filter(idlibro=libro, nomeutente=utente).first()
     if obj:
         obj.delete()
-        messages.info(request, "Libro rimosso dalla lista desideri.")
+        messages.info(request, "Libro rimosso dalla lista desideri.", extra_tags="ld")
     else:
         ListaDesideri.objects.create(idlibro=libro, nomeutente=utente)
-        messages.success(request, "Libro aggiunto alla lista desideri!")
+        messages.success(request, "Libro aggiunto alla lista desideri!", extra_tags="ld")
 
     return redirect('libreria:libro_detail', pk=pk)
 
@@ -136,3 +140,28 @@ class ListaDesideriListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return ListaDesideri.objects.filter(nomeutente=self.request.user).select_related('idlibro')
+
+
+@login_required
+def modifica_lista_scambio(request, pk):
+    libro = get_object_or_404(Libro, pk=pk)
+    utente = request.user
+
+    obj = ListaScambio.objects.filter(idlibro=libro, nomeutente=utente).first()
+    if obj:
+        obj.delete()
+        messages.info(request, "Libro rimosso dalla lista dei libri che vuoi scambiare.", extra_tags="ls")
+    else:
+        ListaScambio.objects.create(idlibro=libro, nomeutente=utente)
+        messages.success(request, "Libro aggiunto alla lista di libri da scambiare!", extra_tags="ls")
+
+    return redirect('libreria:libro_detail', pk=pk)
+
+
+class ListaScambioListView(LoginRequiredMixin, ListView):
+    model = ListaScambio
+    template_name = "libreria/listascambio.html"
+    context_object_name = 'libri'
+
+    def get_queryset(self):
+        return ListaScambio.objects.filter(nomeutente=self.request.user).select_related('idlibro')

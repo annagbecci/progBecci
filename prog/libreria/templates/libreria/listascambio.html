@@ -1,7 +1,7 @@
 {% extends "w3base.html" %}
 {% load static %}
 
-{% block title %} La tua lista desideri {% endblock %}
+{% block title %} I libri che vuoi scambiare {% endblock %}
 
 {% block content %}
     <ul>
@@ -10,7 +10,7 @@
                 {% include "bookcard.html" with libro=item.idlibro %}
             </div>
         {% empty %}
-            <h2>La lista desideri è vuota.</h2>
+            <h2>Ancora non hai aggiunto libri da scambiare.</h2>
         {% endfor %}
     </ul>
 {% endblock %}

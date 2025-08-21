@@ -25,70 +25,72 @@
     <script src="{% static 'js/star_script.js' %}"></script>
 
     <!-- Link per modificare la lista desideri -->
-    <a href="{% url 'libreria:modifica_ld' pk=object.pk %}">
+    <a href="{% url 'libreria:modifica_ld' pk=object.pk %}" style="color:black;">
       {% if in_lista_desideri %}
-          <h4><i class="fas fa-heart text-red-500" style="padding: 3px"></i>Libro presente nella tua lista desideri</h4>
+          <h4><i class="fas fa-heart" style="padding: 8px"></i>Libro presente nella tua lista desideri</h4>
       {% else %}
-          <h4><i class="far fa-heart" style="padding: 3px; color:black"></i>Aggiungilo alla tua lista desideri</h4>
+          <h4><i class="far fa-heart" style="padding: 8px; color:black"></i>Aggiungilo alla tua lista desideri</h4>
       {% endif %}
     </a>
-
-    {% if messages %}
-    <div id="msg-modal" class="w3-modal" style="display:block;">
-      <div class="w3-modal-content w3-animate-top w3-card-4">
-        <header class="w3-container" style="background: #8DC8D8; padding:3%">
-          <span onclick="document.getElementById('msg-modal').style.display='none'"
-                class="w3-button w3-display-topright">&times;</span>
-          <h2>Notifica</h2>
-        </header>
-        <div class="w3-container grande" style="padding: 3%">
-          {% for message in messages %}
-            <p>{{ message }}</p>
-          {% endfor %}
-            <div class="w3-container" style="margin-top: 15px;">
-                <a href="{% url 'libreria:lista_desideri' %}">
-                    <button class="w3-button w3-round-large w3-right" style="background: #DCEEF3;">
-                        Vai alla lista desideri
-                    </button>
-                </a>
-            </div>
-        </div>
-      </div>
-    </div>
-    {% endif %}
 
     <!-- Link per modificare la lista di libri da scambiare -->
-    <h4><i class="far fa-handshake"></i>Aggiungilo ai libri che vuoi scambiare</h4>
-    <a href="{% url 'libreria:modifica_ld' pk=object.pk %}">
-      {% if in_lista_desideri %}
-          <h4><i class="fas fa-heart text-red-500" style="padding: 3px"></i>Libro presente nella tua lista desideri</h4>
+    <a href="{% url 'libreria:modifica_ls' pk=object.pk %}" style="color:black;">
+      {% if in_lista_scambio %}
+          <h4><i class="fas fa-handshake" style="padding: 3px"></i>
+              Questo è un libro che vuoi scambiare! Clicca se hai cambiato idea.
+          </h4>
       {% else %}
-          <h4><i class="far fa-heart" style="padding: 3px; color:black"></i>Aggiungilo alla tua lista desideri</h4>
+          <h4><i class="far fa-handshake" style="padding: 3px; color:black"></i>
+              Aggiungilo alla lista di libri da scambiare
+          </h4>
       {% endif %}
     </a>
 
+    <!-- Gestione dei modal che si aprono alla modifica di lista desideri o scambio -->
     {% if messages %}
-    <div id="msg-modal" class="w3-modal" style="display:block;">
-      <div class="w3-modal-content w3-animate-top w3-card-4">
-        <header class="w3-container" style="background: #8DC8D8; padding:3%">
-          <span onclick="document.getElementById('msg-modal').style.display='none'"
-                class="w3-button w3-display-topright">&times;</span>
-          <h2>Notifica</h2>
-        </header>
-        <div class="w3-container grande" style="padding: 3%">
-          {% for message in messages %}
-            <p>{{ message }}</p>
-          {% endfor %}
-            <div class="w3-container" style="margin-top: 15px;">
-                <a href="{% url 'libreria:lista_desideri' %}">
+      {% for message in messages %}
+        {% if "ld" in message.tags %}
+          <div id="msg-ld-modal" class="w3-modal" style="display:block;">
+            <div class="w3-modal-content w3-animate-top w3-card-4">
+              <header class="w3-container" style="background: #8DC8D8; padding:3%">
+                <span onclick="document.getElementById('msg-ld-modal').style.display='none'"
+                      class="w3-button w3-display-topright">&times;</span>
+                <h2>Notifica</h2>
+              </header>
+              <div class="w3-container grande" style="padding: 3%">
+                <p>{{ message }}</p>
+                <div class="w3-container" style="margin-top: 15px;">
+                  <a href="{% url 'libreria:lista_desideri' %}">
                     <button class="w3-button w3-round-large w3-right" style="background: #DCEEF3;">
-                        Vai alla lista desideri
+                      Vai alla lista desideri
                     </button>
-                </a>
+                  </a>
+                </div>
+              </div>
             </div>
-        </div>
-      </div>
-    </div>
+          </div>
+        {% elif "ls" in message.tags %}
+          <div id="msg-ls-modal" class="w3-modal" style="display:block;">
+            <div class="w3-modal-content w3-animate-top w3-card-4">
+              <header class="w3-container" style="background: #8DC8D8; padding:3%">
+                <span onclick="document.getElementById('msg-ls-modal').style.display='none'"
+                      class="w3-button w3-display-topright">&times;</span>
+                <h2>Notifica</h2>
+              </header>
+              <div class="w3-container grande" style="padding: 3%">
+                <p>{{ message }}</p>
+                <div class="w3-container" style="margin-top: 15px;">
+                  <a href="{% url 'libreria:lista_scambio' %}">
+                    <button class="w3-button w3-round-large w3-right" style="background: #DCEEF3;">
+                      Vai alla lista di scambio
+                    </button>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
     {% endif %}
 
     <br>

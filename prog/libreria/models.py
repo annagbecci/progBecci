@@ -74,7 +74,6 @@ class Libro(models.Model):
         verbose_name_plural = 'Libri'
 
     def __str__(self):
-        # intestazione = self.titolo
         return self.titolo
 
     def aggiorna_valutazione(self, voto: int):
@@ -108,6 +107,10 @@ class ListaDesideri(models.Model):
     nomeutente = models.ForeignKey(Utente, on_delete=models.CASCADE)
     data_aggiunta = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        intestazione = f'{self.idlibro},  {self.nomeutente}'
+        return intestazione
+
     class Meta:
         unique_together = (('idlibro', 'nomeutente'),)
         verbose_name_plural = 'ListeDesideri'
@@ -116,6 +119,10 @@ class ListaDesideri(models.Model):
 class ListaScambio(models.Model):
     idlibro = models.ForeignKey(Libro, on_delete=models.CASCADE)
     nomeutente = models.ForeignKey(Utente, on_delete=models.CASCADE)
+
+    def __str__(self):
+        intestazione = f'{self.idlibro},  {self.nomeutente}'
+        return intestazione
 
     class Meta:
         unique_together = (('idlibro', 'nomeutente'),)
