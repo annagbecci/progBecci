@@ -1,5 +1,4 @@
 from django.shortcuts import render, get_object_or_404
-from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 from libreria.forms import CreaUtenteLettore
@@ -60,7 +59,5 @@ def my_situation(request):
     user = get_object_or_404(Utente, pk=request.user.pk)
     name = user.username
     ctx = {"title":  name}
-    return render(request,
-                  "pstatic.html",
-                  ctx)
+    return render(request,"pstatic.html", ctx)
 

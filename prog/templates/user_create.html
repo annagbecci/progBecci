@@ -1,14 +1,49 @@
 {% extends "w3base.html" %}
 {% load crispy_forms_filters %}
 
-{% block title %} {{ "Creazione profilo" }} {% endblock %}
+{% block title %} {{ "Crea il tuo profilo" }} {% endblock %}
 
 {% block content %}
-    <h2>Crea il tuo profilo</h2>
+    <h2>Registrati per far parte della community!</h2>
+    <br>
 
     <form method="post" action="">
         {% csrf_token %}
-        {{ form | crispy }}
-        <input type="submit" class="btn btn-success" value="Registrati!">
+
+        <div class="w3-row-padding">
+            <div style="width: 45%">
+                {{ form.username|as_crispy_field }}
+            </div>
+            <div style="width: 45%">
+                {{ form.email|as_crispy_field }}
+            </div>
+        </div>
+
+        <div class="w3-row-padding">
+            <div style="width: 45%">
+                {{ form.password1|as_crispy_field }}
+            </div>
+            <div style="width: 45%">
+                {{ form.password2|as_crispy_field }}
+            </div>
+        </div>
+
+        <div class="w3-container" style="padding: 2%">
+            {{ form.immagine|as_crispy_field }}<br>
+            <p style="font-size: 1.5em">Facci conoscere i tuoi interessi. Potremo darti dei consigli migliori!</p>
+            <div class="tags-col">
+                {{ form.tags|as_crispy_field }}
+            </div>
+            <br>
+            <p style="font-size: 1.5em; max-width: 95%">I seguenti campi non sono obbligatori.<br>
+                Però sono necessari se vuoi che altri utenti trovino i tuoi libri disponibili allo scambio!</p>
+            <div style="padding: 1%">{{ form.comune|as_crispy_field }}</div>
+            <div style="padding: 1%">{{ form.inprovincia|as_crispy_field }}</div>
+        </div>
+
+        <div class="w3-center"><input type="submit" class="btn btn-success"
+               style="font-size: 1.3em; padding: 10px 30px" value="Registrati!"><br>
+        </div>
+
     </form>
 {% endblock %}

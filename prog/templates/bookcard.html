@@ -1,9 +1,9 @@
 {% load static %}
 
-<div class="w3-card-2 card-equal" style="text-align:center;">
-    <header class="w3-container w3-light-grey" style="padding: 15px;">
+<div class="w3-card-2 card-equal" style="text-align:center">
+    <header class="w3-container" style="padding: 15px; background: #C2E2EA">
         <h3>
-            <a href="{%  url "libreria:libro_detail" libro.pk %}">{{ libro.titolo }}</a>
+            <a href="{%  url "libreria:libro_detail" libro.pk %}" style="color:black">{{ libro.titolo }}</a>
         </h3>
     </header>
     <div class="w3-container" style="padding: 15px;">

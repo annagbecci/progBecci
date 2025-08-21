@@ -136,3 +136,17 @@ textarea {
   border-radius: 50%; /* rende l’immagine rotonda */
   object-fit: cover;  /* mantiene il ritaglio proporzionato */
 }
+
+
+
+/* Impostazioni per dividere i tags su più colonne nella pagina di registrazione */
+#div_id_tags > div {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 8px 16px;
+}
+
+#div_id_tags .form-check,
+#div_id_tags > div > div {
+    margin: 0;
+}

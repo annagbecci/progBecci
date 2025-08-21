@@ -1,7 +1,7 @@
 from django import forms
-from .models import Utente, Link, Recensione
+from .models import Utente, Link, Recensione, Tag
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
+from crispy_forms.layout import Submit, Layout, Field
 from django.forms import modelformset_factory
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group
@@ -54,9 +54,22 @@ user = get_user_model()
 
 
 class CustomUserCreationForm(UserCreationForm):
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        label="I tuoi generi preferiti"
+    )
+
     class Meta:
         model = user
-        fields = ['username', 'email', 'password1', 'password2', 'tags']
+        fields = ['username', 'email', 'password1', 'password2', 'immagine', 'tags', 'comune', 'inprovincia']
+        labels = {
+            "username": 'Nome utente',
+            "email": 'Email',
+            "immagine": 'La tua immagine profilo',
+            "comune": 'Il comune in cui vuoi scambiare libri',
+            "inprovincia": 'Vuoi scambiare anche in tutta la provincia?',
+        }
 
 
 class CreaUtenteLettore(CustomUserCreationForm):
