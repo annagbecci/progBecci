@@ -1,14 +1,53 @@
 {% extends "w3base.html" %}
+{% load static %}
 
-{% block head %}
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href='{% static "/css/style.css" %}'>
-{% endblock %}
-
-{% block title %} {{ "Utente Detail View" }} {% endblock %}
+{% block title %} {{ "La tua area personale" }} {% endblock %}
 
 {% block content %}
-    <h2>I tuoi dati - {{ object.username }}</h2>
-    <ul><h3>Comune : {{ object.comune }}</h3></ul>
-    <ul><h3>Scambio anche in provincia : {{ object.inprovincia }}</h3></ul>
+    <h1>I tuoi dati - {{ utente.username }}</h1>
+    <div class="w3-container w3-padding-16 grande">
+        {% if utente.email %}
+            <p><strong>Email: </strong> {{ utente.email }}</p>
+        {% else %}
+            <p><strong>Email: </strong>  --- </p>
+        {% endif %}
+
+        <p><strong>La tua immagine profilo: </strong></p>
+        {% if utente.immagine %}
+            <img src="{{ utente.immagine_url }}" alt="Immagine profilo" style="max-width:100px;">
+        {% else %}
+            <img src="{% static 'img/iconadefault.jpg' %}" alt="Immagine profilo" style="max-width: 100px;">
+        {% endif %}
+
+        <br><br>
+          <div class="alert alert-info">
+            <strong>Info!</strong>
+              I prossimi campi sono necessari se vuoi che altri utenti trovino i tuoi libri disponibili per lo scambio.
+          </div>
+        {% if utente.comune %}
+            <p><strong>Comune: </strong> {{ utente.comune }}</p>
+        {% else %}
+            <p><strong>Comune: </strong>  --- </p>
+        {% endif %}
+
+        {% if utente.inprovincia == True %}
+        <p><strong>Scambio in provincia: </strong>  Sì </p>
+        {% else %}
+        <p><strong>Scambio in provincia: </strong>  No </p>
+        {% endif %}
+
+        {% if utente.links %}
+            <p><strong>I tuoi link: </strong> {{ utente.links }}</p>
+        {% else %}
+            <p><strong>I tuoi link: </strong>  --- </p>
+        {% endif %}
+    </div>
+
+    <h1>I tuoi interessi:</h1>
+    <div class="w3-container w3-padding-16 grande">
+        {% for tag in utente.tags.all %}
+            {{ tag.nome }}{% if not forloop.last %},  {% endif %}
+        {% endfor %}
+    </div>
+
 {% endblock %}

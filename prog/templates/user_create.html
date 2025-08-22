@@ -1,5 +1,7 @@
 {% extends "w3base.html" %}
+{% load static %}
 {% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
 
 {% block title %} {{ "Crea il tuo profilo" }} {% endblock %}
 
@@ -7,42 +9,59 @@
     <h2>Registrati per far parte della community!</h2>
     <br>
 
-    <form method="post" action="">
+    <form method="post" action="" enctype="multipart/form-data">
         {% csrf_token %}
 
         <div class="w3-row-padding">
             <div style="width: 45%">
-                {{ form.username|as_crispy_field }}
+                {{ user_form.username|as_crispy_field }}
             </div>
             <div style="width: 45%">
-                {{ form.email|as_crispy_field }}
+                {{ user_form.email|as_crispy_field }}
             </div>
         </div>
 
         <div class="w3-row-padding">
             <div style="width: 45%">
-                {{ form.password1|as_crispy_field }}
+                {{ user_form.password1|as_crispy_field }}
             </div>
             <div style="width: 45%">
-                {{ form.password2|as_crispy_field }}
+                {{ user_form.password2|as_crispy_field }}
             </div>
         </div>
 
         <div class="w3-container" style="padding: 2%">
-            {{ form.immagine|as_crispy_field }}<br>
+            {{ user_form.immagine|as_crispy_field }}<br>
             <p style="font-size: 1.5em">Facci conoscere i tuoi interessi. Potremo darti dei consigli migliori!</p>
             <div class="tags-col">
-                {{ form.tags|as_crispy_field }}
+                {{ user_form.tags|as_crispy_field }}
             </div>
             <br>
             <p style="font-size: 1.5em; max-width: 95%">I seguenti campi non sono obbligatori.<br>
                 Però sono necessari se vuoi che altri utenti trovino i tuoi libri disponibili allo scambio!</p>
-            <div style="padding: 1%">{{ form.comune|as_crispy_field }}</div>
-            <div style="padding: 1%">{{ form.inprovincia|as_crispy_field }}</div>
-        </div>
+            <div style="padding: 1%">{{ user_form.comune|as_crispy_field }}</div>
+            <div style="padding: 1%">{{ user_form.inprovincia|as_crispy_field }}</div>
 
-        <div class="w3-center"><input type="submit" class="btn btn-success"
-               style="font-size: 1.3em; padding: 10px 30px" value="Registrati!"><br>
+            <p style="font-size: 1.5em; max-width: 95%">
+                I link permettono agli altri utenti di contattarti quando vogliono scambiare dei libri con te</p>
+            {{ formset.management_form }}
+            <div id="formset-container">
+                {% for form in formset %}
+                    <div class="link-form" style="margin-bottom: 10px; border: 1px solid #ccc; padding: 10px;">
+                        {% for field in form %}
+                            {{ field|as_crispy_field }}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <button type="button" id="add-form" class="btn btn-secondary"
+                    style="background: #A7D5E1; color: black; font-size: 1.2em">+ Aggiungi link</button>
+            <script src="{% static 'js/aggiungi_link.js' %}"></script>
+
+            <div class="w3-center"><input type="submit" class="btn btn-success"
+                   style="font-size: 1.3em; padding: 10px 30px" value="Registrati!"><br>
+            </div>
         </div>
 
     </form>

@@ -28,7 +28,8 @@ urlpatterns = [
     path("cerca/", views.risultati_ricerca, name="risultati_ricerca"),
     path("situation/", my_situation, name='stat'),  # Questo è da togliere
     path("libreria/", include('libreria.urls')),
-    path("register/", UserCreateView.as_view(), name="register"),
+    #path("register/", UserCreateView.as_view(), name="register"),
+    path("register/", register, name="register"),
     path("login/", auth_views.LoginView.as_view(), name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("libri/categoria/<int:tag_id>/", views.libri_categoria_detail, name="libri_categoria_detail"),

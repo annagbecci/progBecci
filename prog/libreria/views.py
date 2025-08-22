@@ -49,9 +49,10 @@ class UtenteCrispyCreateView(View):
 """
 
 
-class UtenteDetail(DetailView):
+class UtenteDetail(LoginRequiredMixin, DetailView):
     model = Utente
     template_name = 'libreria/utente_detail.html'
+    context_object_name = 'utente'
 
 
 class UtenteList(ListView):

@@ -137,8 +137,6 @@ textarea {
   object-fit: cover;  /* mantiene il ritaglio proporzionato */
 }
 
-
-
 /* Impostazioni per dividere i tags su più colonne nella pagina di registrazione */
 #div_id_tags > div {
     display: grid;

@@ -4,13 +4,18 @@
 {% block title %} I libri che vuoi scambiare {% endblock %}
 
 {% block content %}
-    <ul>
-        {% for item in libri %}
-            <div class="w3-margin-top w3-padding-top-24">
-                {% include "bookcard.html" with libro=item.idlibro %}
-            </div>
-        {% empty %}
-            <h2>Ancora non hai aggiunto libri da scambiare.</h2>
-        {% endfor %}
-    </ul>
+    <h1>La tua lista di libri da scambiare</h1>
+    <br>
+    <div class="alert alert-info">
+        <strong>Info!</strong>
+        Ricorda che, per permettere agli altri utenti di trovare i tuoi libri da scambiare, devi riempire i campi
+        "Comune" e "Links" del tuo profilo. In tal modo sapranno dove vuoi scambiare e come contattarti.
+    </div>
+    {% for item in libri %}
+        <div class="w3-margin-top w3-padding-top-24">
+            {% include "bookcard.html" with libro=item.idlibro %}
+        </div>
+    {% empty %}
+        <h2>Ancora non hai aggiunto libri da scambiare.</h2>
+    {% endfor %}
 {% endblock %}
