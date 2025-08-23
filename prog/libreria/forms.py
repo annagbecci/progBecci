@@ -97,19 +97,38 @@ class CreaUtenteLettore(CustomUserCreationForm):
         g.user_set.add(user)
         return user
 
+
 class RequiredFieldsFormSet(BaseModelFormSet):
     def clean(self):
         super().clean()
         for form in self.forms:
             if not form.cleaned_data or form.cleaned_data.get("DELETE", False):
-                continue  # form vuoto o marcato per cancellazione → lo ignoro
+                continue  # form vuoto o marcato per cancellazione => ignora
 
             nome = form.cleaned_data.get("nome")
             link_social = form.cleaned_data.get("link_social")
 
-            # Se l’utente ha scritto solo uno dei due → errore
+            # Se l’utente ha scritto solo uno dei due => errore
             if (nome and not link_social) or (link_social and not nome):
                 raise ValidationError("Se compili un link, devi compilare anche il nome e viceversa.")
+
+
+class UtenteUpdateForm(forms.ModelForm):
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        label="I tuoi generi preferiti"
+    )
+
+    class Meta:
+        model = Utente
+        fields = ['username', 'immagine', 'comune', 'inprovincia', 'tags']
+        labels = {
+            'username': 'Nome utente',
+            'immagine': 'Immagine profilo',
+            'comune': 'Comune',
+            'inprovincia': 'Scambi anche nella provincia'
+        }
 
 
 class RecensioneForm(forms.ModelForm):

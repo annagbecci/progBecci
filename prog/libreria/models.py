@@ -27,11 +27,6 @@ class Comune(models.Model):
         verbose_name_plural = 'Comuni'
 
 
-class Link(models.Model):
-    nome = models.CharField(max_length=50)  # ad esempio: Instagram, Facebook, Discord, ...
-    link_social = models.URLField()
-
-
 class Autore(models.Model):
     nome = models.CharField(max_length=100)
     biografia = models.TextField(blank=True, null=True)
@@ -41,6 +36,14 @@ class Autore(models.Model):
 
     class Meta:
         verbose_name_plural = 'Autori'
+
+
+class Link(models.Model):
+    nome = models.CharField(max_length=50)  # ad esempio: Instagram, Facebook, Discord, ...
+    link_social = models.URLField()
+
+    def __str__(self):
+        return self.nome
 
 
 class Utente(AbstractUser):

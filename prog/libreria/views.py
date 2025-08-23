@@ -1,13 +1,11 @@
-from braces.views import LoginRequiredMixin
-
 from libreria.models import *
 from .forms import *
-from django.views.generic import DetailView, ListView, CreateView
-
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.contrib import messages
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import DetailView, ListView, CreateView
+from django.contrib.auth.decorators import login_required
+from braces.views import LoginRequiredMixin
 
 
 @login_required
@@ -18,41 +16,13 @@ def index(request):
     return render(request, "libreria/libwelcome.html", ctx)
 
 
-"""
-class UtenteCrispyCreateView(View):
-    # Uso View e non CreateView perché devo gestire più form (utente + link) insieme.
-    def get(self, request):  # mostra il form vuoto
-        utente_form = UtenteCrispyForm()
-        link_formset = LinkFormSet(queryset=Link.objects.none())
-        return render(request, "libreria/utente_crispyform.html", {
-            "utente_form": utente_form,
-            "link_formset": link_formset
-        })
-
-    def post(self, request):  # gestisce l'invio del form
-        utente_form = UtenteCrispyForm(request.POST)  # ricrea il form utente con i dati inviati dal browser.
-        link_formset = LinkFormSet(request.POST)
-
-        if utente_form.is_valid() and link_formset.is_valid():
-            utente = utente_form.save()
-            links = link_formset.save(commit=False)  # aspetto che ci sia l'istanza di utente per creare quelle dei link
-            for link in links:
-                link.utente = utente
-                link.save()
-            return redirect("libreria:utente_list")
-
-        return render(request, "libreria/utente_crispyform.html", {
-            # se il form non è valido ricarica la pagina (evidenziando gli errori (lo fa django con i form))
-            "utente_form": utente_form,
-            "link_formset": link_formset
-        })
-"""
-
-
 class UtenteDetail(LoginRequiredMixin, DetailView):
     model = Utente
     template_name = 'libreria/utente_detail.html'
     context_object_name = 'utente'
+
+    def get_object(self, **kwargs):
+        return self.request.user
 
 
 class UtenteList(ListView):

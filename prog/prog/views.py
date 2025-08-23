@@ -1,8 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic.edit import CreateView
-from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login
 from django.contrib import messages
 from libreria.models import *
 from libreria.forms import *
@@ -11,7 +8,7 @@ from libreria.forms import *
 def home(request):
     categorie = []
     for tag in Tag.objects.all():
-        libri = tag.libro_set.all()[:4]  # primi 4 libri
+        libri = tag.libro_set.all()[:4]  # primi 4 libri: CAMBIARE ORDINE
         if libri.exists():
             categorie.append({
                 'id': tag.id,
@@ -40,11 +37,6 @@ def risultati_ricerca(request):
     })
 
 
-class UserCreateView(CreateView):
-    form_class = CreaUtenteLettore
-    template_name = "user_create.html"
-    success_url = reverse_lazy('login')
-
 def register(request):
     if request.method == "POST":
         user_form = CustomUserCreationForm(request.POST, request.FILES)
@@ -59,11 +51,10 @@ def register(request):
                     link_social = form.cleaned_data.get("link_social")
                     if nome and link_social:
                         link = form.save(commit=False)
-                        link.utente = user
                         link.save()
+                        user.links.add(link)
 
             messages.success(request, "Registrazione completata con successo!")
-            # login(request, user)  # login automatico dopo la registrazione
             return redirect("login")
     else:
         user_form = CustomUserCreationForm()
@@ -72,6 +63,36 @@ def register(request):
     return render(request, "user_create.html", {
         "user_form": user_form,
         "formset": formset
+    })
+
+
+@login_required
+def update_utente(request):
+    utente = Utente.objects.get(pk=request.user.pk)
+
+    if request.method == "POST":
+        form = UtenteUpdateForm(request.POST, request.FILES, instance=utente)
+        formset = LinkFormSet(request.POST)
+
+        if form.is_valid() and formset.is_valid():
+            form.save()
+            links = formset.save()
+            for link in links:
+                utente.links.add(link)
+
+            messages.success(request, "Profilo aggiornato con successo!")
+            return redirect("libreria:utente_detail")
+        else:
+            messages.error(request, "Ci sono errori, controlla i campi.")
+
+    else:
+        # Prepopola il formset con i link attuali dell'utente
+        formset = LinkFormSet(queryset=utente.links.all())
+        form = UtenteUpdateForm(instance=utente)
+
+    return render(request, "libreria/utente_update.html", {
+        "form": form,
+        "formset": formset,
     })
 
 
@@ -91,4 +112,3 @@ def my_situation(request):
     name = user.username
     ctx = {"title":  name}
     return render(request,"pstatic.html", ctx)
-

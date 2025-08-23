@@ -36,11 +36,13 @@
         <p><strong>Scambio in provincia: </strong>  No </p>
         {% endif %}
 
-        {% if utente.links %}
-            <p><strong>I tuoi link: </strong> {{ utente.links }}</p>
-        {% else %}
-            <p><strong>I tuoi link: </strong>  --- </p>
-        {% endif %}
+        <p><strong>I tuoi link: <br></strong>
+            {% for l in utente.links.all %}
+                {{ l.nome }}: {{ l.link_social }}{% if not forloop.last %},<br> {% endif %}
+            {% empty %}
+                ---
+            {% endfor %}
+        </p>
     </div>
 
     <h1>I tuoi interessi:</h1>
@@ -50,4 +52,9 @@
         {% endfor %}
     </div>
 
+    <div class="w3-center" style="padding: 3%;">
+        <a href="{% url 'utente_update' %}" class="btn-primary w3-round-medium"
+           style="font-size:1.3em; padding:20px 30px;">Modifica profilo</a>
+    </div>
+    
 {% endblock %}
