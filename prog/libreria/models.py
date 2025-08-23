@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Group
 from django.templatetags.static import static
 
 
@@ -64,6 +64,15 @@ class Utente(AbstractUser):
             return self.immagine.url
         return static('img/iconadefault.jpg')
 
+    def save(self, *args, **kwargs):
+        is_new = self.pk is None
+        super().save(*args, **kwargs)
+        if is_new:  # lo aggiungo solo al momento della creazione
+            try:
+                gruppo_lettori = Group.objects.get(name="Lettori")
+                self.groups.add(gruppo_lettori)
+            except Group.DoesNotExist:
+                pass
 
 class Libro(models.Model):
     titolo = models.CharField(max_length=100)

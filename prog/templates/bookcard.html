@@ -11,7 +11,7 @@
             <h5>
                 <a href="{% url 'libreria:autore_detail' autore.pk %}">
                     {{ autore.nome }}</a>{% if not forloop.last %}, {% endif %}
-            </h5>{% load static %}
+            </h5>
         {% endfor %}
         <hr>
         <p class="grande" style="text-align: justify;">
