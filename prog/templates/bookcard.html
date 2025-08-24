@@ -19,7 +19,7 @@
     </div>
 
     <!-- Mostra una valutazione su 5 stelle -->
-    <div class="star-rating" data-rating="{{ libro.mediavoti|floatformat:1 }}">
+    <div class="star-rating" style="padding: 3px" data-rating="{{ libro.mediavoti|floatformat:1 }}">
         {% for i in "12345" %}
             <span class="star">★</span>
         {% endfor %}

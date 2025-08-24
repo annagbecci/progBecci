@@ -1,9 +1,44 @@
 {% extends "w3base.html" %}
+{% load static %}
 
 {% block title %} {{ title }} {%  endblock %}
 
 {% block content %}
-    <h1>Ciao</h1>
-    <h2>Benvenuti nella libreria</h2>
-    <h3>Questo è il tuo angolo personale</h3>
+    <h1>Ciao {{ user.username }}!</h1>
+    <h2>Qui trovi i libri che hai letto e i dettagli che non vuoi dimenticare.</h2>
+    <br>
+    <h3>La lista dei libri che hai letto:</h3>
+
+    {% for recensione in recensioni %}
+        <br>
+        <div class="w3-card-2 card-equal">
+            <header class="w3-container" style="padding: 15px; display: flex; background: #C2E2EA">
+                <img src="{{ recensione.nomeutente.immagine_url }}" alt="Immagine profilo" class="avatar">
+
+                <h3 style="margin-left: 10px;">
+                    {{ recensione.nomeutente.username }},
+                    {{ recensione.data_aggiunta|date:"d/m/Y" }}
+                </h3>
+            </header>
+            <div class="w3-container" style="padding: 15px;">
+                <div class="star-rating" data-rating="{{ recensione.voto|floatformat:1 }}">
+                    <h4><strong><a href="{% url 'libreria:note_list' recensione.idlibro.pk %}">
+                        {{ recensione.idlibro.titolo }} <i class="fa fa-sign-in"></i></a></strong>
+                    </h4>
+                    <hr>
+                    <strong class="grande">Hai votato: </strong>
+                    {% for i in "12345" %}
+                        <span class="star">★</span>
+                    {% endfor %}
+                </div>
+                <script src="{% static 'js/star_script.js' %}"></script>
+            </div>
+        </div>
+    {% empty %}
+        <p class="grande">Non hai ancora libri in questa lista.</p>
+        <div class="alert alert-info"><strong>Info! </strong>
+            I libri vengono inseriti in questa lista quando aggiungi una valutazione da una a cinque stelle.
+            Trova i libri e lascia la tua recensione!
+        </div>
+    {% endfor %}
 {% endblock %}

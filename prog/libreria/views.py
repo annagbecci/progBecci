@@ -12,7 +12,13 @@ from braces.views import LoginRequiredMixin
 def index(request):
     user = get_object_or_404(Utente, pk=request.user.pk)
     title = "Libreria di " + user.username
-    ctx = {"title":  title}
+
+    recensioni_utente = Recensione.objects.filter(nomeutente=user)
+
+    ctx = {
+        "title": title,
+        "recensioni": recensioni_utente,
+    }
     return render(request, "libreria/libwelcome.html", ctx)
 
 
@@ -136,3 +142,41 @@ class ListaScambioListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return ListaScambio.objects.filter(nomeutente=self.request.user).select_related('idlibro')
+
+
+class NoteListView(LoginRequiredMixin, ListView):
+    model = Nota
+    template_name = "libreria/nota_list.html"
+    context_object_name = "note"
+
+    def get_queryset(self):
+        libro_id = self.kwargs['pk']
+        return Nota.objects.filter(
+            nomeutente=self.request.user,
+            idlibro_id=libro_id
+        ).select_related('idlibro')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["libro"] = Libro.objects.get(pk=self.kwargs['pk'])
+        return context
+
+
+class NotaCreateView(LoginRequiredMixin, CreateView):
+    model = Nota
+    fields = ['messaggio']
+    template_name = "libreria/nota_form.html"
+
+    def form_valid(self, form):
+        form.instance.nomeutente = self.request.user
+        libro = get_object_or_404(Libro, pk=self.kwargs['pk'])
+        form.instance.idlibro = libro
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('libreria:note_list', kwargs={'pk': self.kwargs['pk']})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["libro"] = Libro.objects.get(pk=self.kwargs['pk'])
+        return context

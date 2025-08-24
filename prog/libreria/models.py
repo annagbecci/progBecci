@@ -113,6 +113,10 @@ class Nota(models.Model):
     class Meta:
         verbose_name_plural = 'Note'
 
+    def __str__(self):
+        titolo = f'{self.idlibro},  {self.nomeutente}'
+        return titolo
+
 
 class ListaDesideri(models.Model):
     idlibro = models.ForeignKey(Libro, on_delete=models.CASCADE)

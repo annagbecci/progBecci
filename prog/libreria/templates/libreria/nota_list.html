@@ -1,0 +1,24 @@
+{% extends "w3base.html" %}
+{% load static %}
+
+{% block title %} {{ "Le tue note" }} {% endblock %}
+
+{% block content %}
+    <h2>Le tue note per "{{ libro.titolo }}"</h2>
+
+    {% if note %}
+        {% for n in note %}
+            <div class="w3-panel w3-pale-yellow w3-border w3-border-yellow" style="padding: 2%">
+                <p>{{ n.messaggio }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="grande">Non hai ancora aggiunto note per questo libro.</p>
+    {% endif %}
+
+    <div class="w3-center" style="padding: 3%;">
+        <a href="{% url 'libreria:nota_add' libro.pk %}" class="btn-default w3-round-medium  w3-border w3-border-blue-grey"
+           style="font-size:1.3em; padding:20px 30px; background: #C2E2EA; color:black">Aggiungi una nota!</a>
+    </div>
+
+{% endblock %}

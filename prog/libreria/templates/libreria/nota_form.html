@@ -1,0 +1,24 @@
+{% extends "w3base.html" %}
+{% load crispy_forms_filters %}
+{% load static %}
+
+{% block title %}{{ "Nuova nota" }}{% endblock %}
+
+{% block content %}
+    <h2>Aggiungi una nota</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy}}
+
+        <div class="w3-row-padding">
+            <a href="{% url 'libreria:note_list' libro.pk %}"
+               class="btn-default w3-round-medium  w3-border w3-border-red"
+               style="font-size:1.3em; padding:20px 30px; width: 140px; text-align: center;
+               background: #FEC5BB; color:black">Annulla</a>
+
+            <button type="submit" class="btn-default w3-round-medium  w3-border w3-border-blue-grey"
+                    style="font-size:1.3em; padding:20px 30px; width: 140px; text-align: center;
+                    background: #A7D5E1; color:black">Salva</button>
+        </div>
+    </form>
+{% endblock %}

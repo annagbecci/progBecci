@@ -15,5 +15,6 @@ urlpatterns = [
     path('lista-desideri/', views.ListaDesideriListView.as_view(), name='lista_desideri'),
     path('lista-scambio/aggiungi/<int:pk>/', views.modifica_lista_scambio, name='modifica_ls'),
     path('lista-scambio/', views.ListaScambioListView.as_view(), name='lista_scambio'),
-    # path('utente-delete/<int:pk>/', views.UtenteDelete.as_view(), name='utente_delete'),
+    path('libro/<int:pk>/note/', views.NoteListView.as_view(), name='note_list'),
+    path('libro/<int:pk>/addnota/', views.NotaCreateView.as_view(), name='nota_add'),
 ]
