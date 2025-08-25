@@ -20,10 +20,10 @@
         {% endif %}
 
         <br><br>
-          <div class="alert alert-info">
+        <div class="alert alert-info">
             <strong>Info!</strong>
-              I prossimi campi sono necessari se vuoi che altri utenti trovino i tuoi libri disponibili per lo scambio.
-          </div>
+            I prossimi campi sono necessari se vuoi che altri utenti trovino i tuoi libri disponibili per lo scambio.
+        </div>
         {% if utente.comune %}
             <p><strong>Comune: </strong> {{ utente.comune }}</p>
         {% else %}
@@ -31,9 +31,9 @@
         {% endif %}
 
         {% if utente.inprovincia == True %}
-        <p><strong>Scambio in provincia: </strong>  Sì </p>
+            <p><strong>Scambio in provincia: </strong>  Sì </p>
         {% else %}
-        <p><strong>Scambio in provincia: </strong>  No </p>
+            <p><strong>Scambio in provincia: </strong>  No </p>
         {% endif %}
 
         <p><strong>I tuoi link: <br></strong>

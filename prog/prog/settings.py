@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     'libreria',
     'crispy_forms',
     "crispy_bootstrap4",
+    "django_select2",
+    "dal",
+    "dal_select2",
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = ["bootstrap4"]

@@ -1,45 +1,15 @@
 from django import forms
-from .models import Utente, Link, Recensione, Tag
-from django.forms import BaseModelFormSet, ValidationError
+from .models import Utente, Link, Recensione, Tag, Libro, Autore
+from django.forms import BaseModelFormSet, ValidationError, ModelForm
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Field
 from django.forms import modelformset_factory
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group
 from django.contrib.auth import get_user_model
+from dal import autocomplete
 
-"""
-class UtenteCrispyForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_tag = False  # perché il form principale sarà fuori
-        self.helper.disable_csrf = True
-
-    class Meta:
-        model = Utente
-        fields = ['username', 'password', 'email', 'immagine', 'comune', 'inprovincia', 'tags']
-
-
-LinkFormSet = modelformset_factory(
-    Link,
-    fields=['nome', 'link_social'],
-    extra=2,
-    can_delete=True
-)
-
-
-class UtenteForm(forms.ModelForm):
-    class Meta:
-        model = Utente
-        fields = ['username', 'password', 'email', 'immagine', 'comune', 'inprovincia', 'tags']
-        widgets = {
-            'password': forms.PasswordInput(),
-            'tags': forms.CheckboxSelectMultiple(),
-        }
-
-
-user = get_user_model()"""
+from django_select2.forms import ModelSelect2MultipleWidget
 
 
 class LinkForm(forms.ModelForm):
@@ -145,3 +115,39 @@ class RecensioneForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Invia'))
+
+
+"""class LibroForm(ModelForm):
+    class Meta:
+        model = Libro
+        fields = ["titolo", "autori", "tags", "trama"]
+        widgets = {
+            # Autori con Select2 (ricerca)
+            "autori": ModelSelect2MultipleWidget(
+                model=Autore,
+                search_fields=["nome__icontains", "cognome__icontains"],
+                attrs={
+                    "data-placeholder": "Seleziona autori",
+                    "style": "width:100%"
+                }
+            ),
+            # Tag con checkbox multiple
+            "tags": forms.CheckboxSelectMultiple,
+        }"""
+
+
+class AutoreWidget(ModelSelect2MultipleWidget):
+    model = Autore
+    search_fields = ["nome__icontains", "cognome__icontains"]
+
+
+class LibroForm(forms.ModelForm):
+    class Meta:
+        model = Libro
+        fields = ['titolo', 'autori', 'tags', 'trama']
+        widgets = {
+            'autori': autocomplete.ModelSelect2Multiple(
+                url='autore-autocomplete'
+            ),
+            'tags': forms.CheckboxSelectMultiple(),
+        }

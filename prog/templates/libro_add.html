@@ -1,0 +1,27 @@
+{% extends "w3base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
+
+{% block title %}Nuovo libro{% endblock %}
+
+{% block content %}
+
+    <h1>Aggiungi qui un nuovo libro</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+
+        <div class="w3-row-padding">
+            <a href="{% url "risultati_ricerca" %}"
+               class="btn-default w3-round-medium  w3-border w3-border-red"
+               style="font-size:1.3em; padding:20px 30px; width: 140px; text-align: center;
+               background: #FEC5BB; color:black">Annulla</a>
+
+            <button type="submit" class="btn-default w3-round-medium  w3-border w3-border-blue-grey"
+                    style="font-size:1.3em; padding:20px 30px; width: 140px; text-align: center;
+                    background: #A7D5E1; color:black">Salva</button>
+        </div>
+    </form>
+{% endblock %}
+

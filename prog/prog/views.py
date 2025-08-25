@@ -1,8 +1,11 @@
+from django.views.generic import DetailView, ListView, CreateView
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from libreria.models import *
 from libreria.forms import *
+from braces.views import LoginRequiredMixin
+from dal import autocomplete
 
 
 def home(request):
@@ -105,10 +108,46 @@ def libri_categoria_detail(request, tag_id):
     })
 
 
+class AutoreCreateView(LoginRequiredMixin, CreateView):
+    model = Autore
+    fields = ['nome', 'biografia']
+    template_name = 'autore_create.html'
+
+    def get_success_url(self):
+        return reverse_lazy('risultati_ricerca')
+
+
+class AutoreAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return Autore.objects.none()
+
+        qs = Autore.objects.all()
+
+        if self.q:
+            qs = qs.filter(nome__icontains=self.q)
+
+        return qs
+
+
+class AutoreWidget(ModelSelect2MultipleWidget):
+    model = Autore
+    search_fields = ["nome__icontains"]
+
+
+class LibroCreateView(LoginRequiredMixin, CreateView):
+    model = Libro
+    form_class = LibroForm
+    template_name = 'libro_add.html'
+
+    def get_success_url(self):
+        return reverse_lazy('risultati_ricerca')
+
+
 # Da togliere!!!
 @login_required
 def my_situation(request):
     user = get_object_or_404(Utente, pk=request.user.pk)
     name = user.username
     ctx = {"title":  name}
-    return render(request,"pstatic.html", ctx)
+    return render(request, "pstatic.html", ctx)

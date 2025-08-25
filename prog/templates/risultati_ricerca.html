@@ -5,6 +5,13 @@
 {% block content %}
     <h1>Hai cercato "{{ query }}"</h1>
 
+    <div class="alert alert-warning"><strong>Info!</strong>
+        Se nel nostro database non c'è quello che cerchi, clicca sui seguenti link per
+        <a href="{% url 'autore_create' %}">AGGIUNGERE UN AUTORE</a> o
+        <a href="{% url 'libro_create' %}">AGGIUNGERE UN LIBRO</a>.
+        <br>Noi ci occuperemo presto di verificarlo!
+    </div>
+
     <div class="container" style="padding: 1%">
         {% if libri or autori %}
             {% if autori %}
