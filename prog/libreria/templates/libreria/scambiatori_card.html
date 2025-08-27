@@ -1,7 +1,9 @@
 <div class="w3-card-2 card-equal" style="text-align:center">
     <header class="w3-container" style="padding: 15px; display: flex; background: #C2E2EA">
         <img src="{{ item.nomeutente.immagine_url }}" alt="Immagine profilo" class="avatar">
-        <h3 style="margin-left: 10px;"> {{ item.nomeutente.username }}</h3>
+        <a href="{% url 'libreria:scambi_utente' pk=item.nomeutente.pk %}">
+            <h3 style="margin-left: 10px;"> {{ item.nomeutente.username }}</h3>
+        </a>
     </header>
     <div class="w3-container" style="padding: 15px;">
         {% if item.nomeutente.inprovincia %}

@@ -1,0 +1,28 @@
+{% extends "w3base.html" %}
+{% load static %}
+
+{% block title %}Dettagli dell'utente{% endblock %}
+
+{% block content %}
+    <h1>Qui trovi i libri che {{ utente.username }} vuole scambiare</h1>
+    <div class="w3-container" style="padding: 15px;">
+        {% if utente.inprovincia %}
+            <h3>Scambia a {{ utente.comune }} e nella provincia ({{ utente.comune.provincia }})<br></h3>
+        {% else %}
+            <h3>Scambia solo nel comune di {{ utente.comune }} ({{ utente.comune.provincia }})</h3>
+        {% endif %}
+        <p class="grande">Puoi contattare {{ utente.username }} ai seguenti link:<br>
+            {% for l in utente.links.all %}
+                <a href="{{ l.link_social }}" target="_blank" rel="noopener noreferrer">
+                    {{ l.nome }}
+                </a>{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+    </div>
+
+    {% for scambio in disponibili %}
+        {% include 'bookcard.html' with libro=scambio.idlibro %}
+        <br>
+    {% endfor %}
+
+{% endblock %}

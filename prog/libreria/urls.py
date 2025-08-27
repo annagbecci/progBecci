@@ -18,4 +18,5 @@ urlpatterns = [
     path('libro/<int:pk>/note/', views.NoteListView.as_view(), name='note_list'),
     path('libro/<int:pk>/addnota/', views.NotaCreateView.as_view(), name='nota_add'),
     path('trova/<int:pk>/scambio/', views.LibroScambioListView.as_view(), name='scambio_list'),
+    path('utente/<int:pk>/scambi/', views.ScambiatorePage.as_view(), name='scambi_utente')
 ]

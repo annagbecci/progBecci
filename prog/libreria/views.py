@@ -218,3 +218,18 @@ class LibroScambioListView(LoginRequiredMixin, ListView):
         context["altra_provincia"] = altra_provincia
 
         return context
+
+
+class ScambiatorePage(LoginRequiredMixin, ListView):
+    model = ListaScambio
+    template_name = "libreria/scambiatore_page.html"
+    context_object_name = "disponibili"
+
+    def get_queryset(self):
+        return ListaScambio.objects.filter(nomeutente_id=self.kwargs['pk']).select_related("idlibro")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["utente"] = Utente.objects.get(pk=self.kwargs['pk'])
+        return context
+
