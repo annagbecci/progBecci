@@ -4,19 +4,20 @@
 {% block title %} {{ "Pagina di Login" }} {% endblock %}
 
 {% block content %}
-    <h2>Accedi al tuo profilo</h2>
+    <h1>Accedi al tuo profilo</h1><br>
+    {% if "notok" in request.GET.auth %}
+        <div class="alert alert-danger grande" role="alert" style="text-align: center">
+            Non hai i permessi necessari per accedere a quella pagina.
+        </div>
+    {% endif %}
+    <br>
 
     <form method="post" action="">
         {% csrf_token %}
         {{ form | crispy }}
         <input type="submit" class="btn btn-success" value="Accedi">
     </form>
-    <br>
-    {% if "notok" in request.GET.auth %}
-        <div class="alert alert-danger" role="alert">
-            Non hai i permessi necessari per accedere a quella pagina.
-        </div>
-    {% endif %}
 
+    <br>
     <h4>Non hai ancora un profilo? <a href="{% url 'register' %}" class="w3-button, link-classico">Registrati qui!</a></h4>
 {% endblock %}

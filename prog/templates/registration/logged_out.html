@@ -1,8 +1,10 @@
 {% extends "w3base.html" %}
+{% load static %}
 
 {% block title %} {{ "Log Out" }} {% endblock %}
 
 {% block content %}
-    <h2>Logout eseguito con successo</h2>
-    <h4>A presto!</h4>
+    <h1>Logout eseguito con successo</h1>
+    <h2>A presto!</h2>
+    <img src="{% static '/img/finding.png' %}" alt="In cerca del prossimo libro" class="w3-image">
 {% endblock %}
