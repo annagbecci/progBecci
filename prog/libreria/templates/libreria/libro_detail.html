@@ -18,32 +18,38 @@
             <span class="star">★</span>
         {% endfor %}
 
-        <a href="#rece">({{ libro.numerovoti }} recensioni)</a>
-         - <i class="fas fa-pen"></i>
+        <a href="#rece">({{ libro.numerovoti }} recensioni)</a>  - <i class="fas fa-pen"></i>
         <a href="{% url 'libreria:nuova_recensione' libro.pk %}">Lascia la tua recensione</a>
     </div>
     <script src="{% static 'js/star_script.js' %}"></script>
 
     <!-- Link per modificare la lista desideri -->
     <a href="{% url 'libreria:modifica_ld' pk=object.pk %}" style="color:black;">
-      {% if in_lista_desideri %}
-          <h4><i class="fas fa-heart" style="padding: 8px"></i>Libro presente nella tua lista desideri</h4>
-      {% else %}
-          <h4><i class="far fa-heart" style="padding: 8px; color:black"></i>Aggiungilo alla tua lista desideri</h4>
-      {% endif %}
+        {% if in_lista_desideri %}
+            <h4><i class="fas fa-heart" style="padding: 8px"></i>Libro presente nella tua lista desideri</h4>
+        {% else %}
+            <h4><i class="far fa-heart" style="padding: 8px; color:black"></i>Aggiungilo alla tua lista desideri</h4>
+        {% endif %}
     </a>
 
     <!-- Link per modificare la lista di libri da scambiare -->
     <a href="{% url 'libreria:modifica_ls' pk=object.pk %}" style="color:black;">
-      {% if in_lista_scambio %}
-          <h4><i class="fas fa-handshake" style="padding: 3px"></i>
-              Questo è un libro che vuoi scambiare! Clicca se hai cambiato idea.
-          </h4>
-      {% else %}
-          <h4><i class="far fa-handshake" style="padding: 3px; color:black"></i>
-              Aggiungilo alla lista di libri da scambiare
-          </h4>
-      {% endif %}
+        {% if in_lista_scambio %}
+            <h4><i class="fas fa-handshake" style="padding: 3px"></i>
+                Questo è un libro che vuoi scambiare! Clicca se hai cambiato idea.
+            </h4>
+        {% else %}
+            <h4><i class="far fa-handshake" style="padding: 3px; color:black"></i>
+                Aggiungilo alla lista di libri da scambiare
+            </h4>
+        {% endif %}
+    </a>
+
+    <!-- Link per cercare il libro per lo scambio -->
+    <a href="{% url 'libreria:scambio_list' pk=object.pk %}" style="color:black;">
+        <h4><i class="fas fa-search-location" style="padding: 4px"></i>
+            Cerca le disponibilità allo scambio per questo libro
+        </h4>
     </a>
 
     <!-- Gestione dei modal che si aprono alla modifica di lista desideri o scambio -->

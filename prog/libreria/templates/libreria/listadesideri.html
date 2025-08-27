@@ -5,13 +5,16 @@
 
 {% block content %}
     <h1>La tua lista desideri</h1>
-    <ul>
-        {% for item in libri %}
-            <div class="w3-margin-top w3-padding-top-24">
-                {% include "bookcard.html" with libro=item.idlibro %}
-            </div>
-        {% empty %}
-            <h2>La lista desideri è vuota.</h2>
-        {% endfor %}
-    </ul>
+    {% for item in libri %}
+        <div class="w3-margin-top w3-padding-top-24">
+            <p style="text-align: right; font-size: 1.2em">
+                <a href="{% url 'libreria:scambio_list' pk=item.idlibro.pk %}">
+                    <i class="fas fa-search-location"></i> Cerca "{{ item.idlibro.titolo }}" per uno scambio
+                </a>
+            </p>
+            {% include "bookcard.html" with libro=item.idlibro %}
+        </div>
+    {% empty %}
+        <h2>La lista desideri è vuota.</h2>
+    {% endfor %}
 {% endblock %}

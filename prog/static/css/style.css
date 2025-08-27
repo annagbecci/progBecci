@@ -63,7 +63,7 @@
     flex-wrap: wrap;
     gap: 16px; /* Spazio tra le card */
 }
-.card-container {/* desktop - 4 card per riga considerando il gap*/
+.card-container { /* desktop - 4 card per riga considerando il gap*/
     flex: 0 0 calc(25% - 16px); /* sempre 25% */
     max-width: calc(25% - 16px);
     display: flex;
@@ -79,7 +79,7 @@
 @media (max-width: 600px) { /* mobile */
     .card-container {
         flex: 0 0 100%;
-        max-width: 100%;/* 1 card per riga */
+        max-width: 100%; /* 1 card per riga */
     }
 }
 

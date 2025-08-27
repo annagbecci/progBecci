@@ -7,10 +7,10 @@
     <div class="w3-container">
         <h1>Ecco la lista di utenti che vogliono scambiare questo libro</h1>
 
-
+        {% if scambi %}
             {% if stessa_provincia %}
                 <div class="w3-margin-top">
-                    <h2>Vicino a te</h2>
+                    <h2>Vicino a te:</h2>
                     <div class="w3-row-padding">
                         {% for item in stessa_provincia %}
                             <div class="card-container">
@@ -19,7 +19,6 @@
                         {% endfor %}
                     </div>
                 </div>
-
             {% endif %}
 
             {% if altra_provincia %}
@@ -30,19 +29,14 @@
                             <div class="card-container">
                                 {% include "libreria/scambiatori_card.html" %}
                             </div>
-
                         {% endfor %}
                     </div>
                 </div>
-
             {% endif %}
 
-
-
-        {% if scambi == None %}
-            <h2>Ancora nessuno è pronto a separarsi da questo libro...</h2>
+        {% else %}
+            <h2><br>Ancora nessuno è pronto a separarsi da questo libro...</h2>
         {% endif %}
     </div>
-
 
 {% endblock %}
