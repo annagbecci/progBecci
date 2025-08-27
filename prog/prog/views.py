@@ -1,4 +1,4 @@
-from django.views.generic import DetailView, ListView, CreateView
+from django.views.generic import CreateView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
@@ -130,7 +130,7 @@ class AutoreAutocomplete(autocomplete.Select2QuerySetView):
         return qs
 
 
-class AutoreWidget(ModelSelect2MultipleWidget):
+class AutoreWidget(ModelSelect2MultipleWidget): # DOVREI AGGIUNGERE UN CONTROLLO SULL'ACCESSO
     model = Autore
     search_fields = ["nome__icontains"]
 

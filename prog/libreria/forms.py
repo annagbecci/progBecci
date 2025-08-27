@@ -6,7 +6,6 @@ from crispy_forms.layout import Submit, Layout, Field
 from django.forms import modelformset_factory
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group
-from django.contrib.auth import get_user_model
 from dal import autocomplete
 
 from django_select2.forms import ModelSelect2MultipleWidget
@@ -45,7 +44,6 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 class CreaUtenteLettore(CustomUserCreationForm):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -102,7 +100,6 @@ class UtenteUpdateForm(forms.ModelForm):
 
 
 class RecensioneForm(forms.ModelForm):
-
     class Meta:
         model = Recensione
         fields = ['voto', 'commento']
@@ -115,25 +112,6 @@ class RecensioneForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Invia'))
-
-
-"""class LibroForm(ModelForm):
-    class Meta:
-        model = Libro
-        fields = ["titolo", "autori", "tags", "trama"]
-        widgets = {
-            # Autori con Select2 (ricerca)
-            "autori": ModelSelect2MultipleWidget(
-                model=Autore,
-                search_fields=["nome__icontains", "cognome__icontains"],
-                attrs={
-                    "data-placeholder": "Seleziona autori",
-                    "style": "width:100%"
-                }
-            ),
-            # Tag con checkbox multiple
-            "tags": forms.CheckboxSelectMultiple,
-        }"""
 
 
 class AutoreWidget(ModelSelect2MultipleWidget):

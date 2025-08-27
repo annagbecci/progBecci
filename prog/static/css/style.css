@@ -63,23 +63,43 @@
     flex-wrap: wrap;
     gap: 16px; /* Spazio tra le card */
 }
-
-.card-container { /* desktop */
-    flex: 1 1 calc(25% - 16px); /* 4 card per riga considerando il gap */
+.card-container {/* desktop - 4 card per riga considerando il gap*/
+    flex: 0 0 calc(25% - 16px); /* sempre 25% */
+    max-width: calc(25% - 16px);
     display: flex;
 }
 
 @media (max-width: 992px) { /* tablet */
     .card-container {
-        flex: 1 1 calc(33.33% - 16px); /* 3 card per riga */
+        flex: 0 0 calc(33.33% - 16px);
+        max-width: calc(33.33% - 16px); /* 3 card per riga */
     }
 }
 
 @media (max-width: 600px) { /* mobile */
     .card-container {
-        flex: 1 1 100%; /* 1 card per riga */
+        flex: 0 0 100%;
+        max-width: 100%;/* 1 card per riga */
     }
 }
+
+/*TOGLI I 3 PROSSIMI
+.card-container {
+    flex: 1 1 calc(25% - 16px);
+    display: flex;
+}
+
+@media (max-width: 992px) {
+    .card-container {
+        flex: 1 1 calc(33.33% - 16px);
+    }
+}
+
+@media (max-width: 600px) {
+    .card-container {
+        flex: 1 1 100%;
+    }
+}*/
 
 .card-equal {
     display: flex;

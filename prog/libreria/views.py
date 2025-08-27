@@ -17,7 +17,7 @@ def index(request):
 
     ctx = {
         "title": title,
-        "recensioni": recensioni_utente,
+        "recensioni": recensioni_utente.order_by("data_aggiunta").reverse(),
     }
     return render(request, "libreria/libwelcome.html", ctx)
 
@@ -179,4 +179,42 @@ class NotaCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["libro"] = Libro.objects.get(pk=self.kwargs['pk'])
+        return context
+
+
+class LibroScambioListView(LoginRequiredMixin, ListView):
+    model = ListaScambio
+    template_name = "libreria/scambi_libro.html"
+    context_object_name = "scambi"
+
+    def get_queryset(self):
+        libro_id = self.kwargs['pk']
+        return (ListaScambio.objects.filter(idlibro_id=libro_id).select_related('idlibro')
+                .exclude(nomeutente=self.request.user)
+                .exclude(nomeutente__comune=None)
+                .exclude(nomeutente__links=None))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        queryset = context["scambi"]
+
+        stessa_provincia = []
+        altra_provincia = []
+
+        user_comune = getattr(self.request.user, "comune", None)
+
+        for scambio in queryset:
+            if user_comune and (scambio.nomeutente.comune.provincia == user_comune.provincia):
+                """se l'utente che cerca ha impostato il comune, divido gli scambiatori disponibili tra quelli vicino a
+                lui (quelli nella stessa provincia, indipendentemente dalla scelta di scambiare anche nella provincia)
+                e quelli fuori provincia => poi viene scritto su schermo dove è disposto a scambiare di preciso"""
+                stessa_provincia.append(scambio)
+            else:
+                """se l'utente che cerca NON ha impostato il comune, tutti gli scambiatori saranno allo stesso livello, 
+                senza distinzione di lontananza"""
+                altra_provincia.append(scambio)
+
+        context["stessa_provincia"] = stessa_provincia
+        context["altra_provincia"] = altra_provincia
+
         return context
