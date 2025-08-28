@@ -143,11 +143,3 @@ class LibroCreateView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse_lazy('risultati_ricerca')
 
-
-# Da togliere!!!
-@login_required
-def my_situation(request):
-    user = get_object_or_404(Utente, pk=request.user.pk)
-    name = user.username
-    ctx = {"title":  name}
-    return render(request, "pstatic.html", ctx)

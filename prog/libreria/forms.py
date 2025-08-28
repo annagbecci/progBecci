@@ -1,5 +1,5 @@
 from django import forms
-from .models import Utente, Link, Recensione, Tag, Libro, Autore
+from .models import *
 from django.forms import BaseModelFormSet, ValidationError, ModelForm
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Field
@@ -129,3 +129,48 @@ class LibroForm(forms.ModelForm):
             ),
             'tags': forms.CheckboxSelectMultiple(),
         }
+
+
+class EventoForm(forms.ModelForm):
+    via = forms.CharField(max_length=50, label="Via")
+    comune = forms.ModelChoiceField(queryset=Comune.objects.all(), label="Comune")
+
+    class Meta:
+        model = Evento
+        fields = ["idlibro", "date", "descrizione", "via", "comune"]
+        labels = {
+            'idlibro': "Il titolo del libro",
+            'date': "La data dell'evento",
+            'descrizione': "Lascia una tua nota per i lettori",
+            'via': "La via",
+            'comune': "Seleziona un comune",
+        }
+        widgets = {
+            "date": forms.DateInput(attrs={"type": "date"}),
+            "descrizione": forms.Textarea(attrs={"rows": 3}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop("user")
+        super().__init__(*args, **kwargs)
+
+        # Filtro i libri: solo quelli dell'autore collegato all'utente
+        if getattr(user, "autore_id", None):
+            self.fields["idlibro"].queryset = (
+                Libro.objects.filter(autori=user.autore).order_by("titolo")
+            )
+        else:
+            # Utente senza autore collegato: nessun libro selezionabile => Non dovrebbe mai verificarsi
+            self.fields["idlibro"].queryset = Libro.objects.none()
+
+    def save(self, commit=True):
+        evento = super().save(commit=False)
+
+        via = self.cleaned_data["via"].strip()
+        comune = self.cleaned_data["comune"]
+        luogo, _ = Luogo.objects.get_or_create(via=via, comune=comune)
+
+        evento.luogo = luogo
+        if commit:
+            evento.save()
+        return evento

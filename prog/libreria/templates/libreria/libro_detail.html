@@ -5,13 +5,12 @@
 
 {% block content %}
     <h2>{{ object.titolo }}</h2>
-
-    {% for autore in libro.autori.all %}
-        <h4>Scritto da
+    <h4>Scritto da
+        {% for autore in libro.autori.all %}
             <a href="{% url 'libreria:autore_detail' autore.pk %}">
                 {{ autore.nome }}</a>{% if not forloop.last %}, {% endif %}
-        </h4>
-    {% endfor %}
+        {% endfor %}
+    </h4>
 
     <div class="star-rating grande" data-rating="{{ libro.mediavoti|floatformat:1 }}">
         {% for i in "12345" %}
