@@ -1,14 +1,13 @@
-from django import forms
 from .models import *
-from django.forms import BaseModelFormSet, ValidationError, ModelForm
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout, Field
+from django import forms
+from django.forms import BaseModelFormSet, ValidationError
 from django.forms import modelformset_factory
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import Group
+from django.utils import timezone
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit, Layout
 from dal import autocomplete
-
-from django_select2.forms import ModelSelect2MultipleWidget
 
 
 class LinkForm(forms.ModelForm):
@@ -114,9 +113,11 @@ class RecensioneForm(forms.ModelForm):
         self.helper.add_input(Submit('submit', 'Invia'))
 
 
+"""
 class AutoreWidget(ModelSelect2MultipleWidget):
     model = Autore
-    search_fields = ["nome__icontains", "cognome__icontains"]
+    search_fields = ["nome__icontains", "cognome__icontains"]  # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+"""
 
 
 class LibroForm(forms.ModelForm):
@@ -174,3 +175,14 @@ class EventoForm(forms.ModelForm):
         if commit:
             evento.save()
         return evento
+
+
+class EventiFilterForm(forms.Form):
+    provincia = forms.ChoiceField(choices=[], required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Province disponibili
+        province = Luogo.objects.values_list('comune__provincia', flat=True).filter(evento__date__gte=timezone.now()).distinct()
+        self.fields['provincia'].choices = [('', 'Tutte')] + [(p, p) for p in province]

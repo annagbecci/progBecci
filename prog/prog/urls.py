@@ -20,6 +20,8 @@ urlpatterns = [
     path("autore-autocomplete/", AutoreAutocomplete.as_view(), name="autore-autocomplete"),
     path("select2/", include("django_select2.urls")),
     path("libro-crea/", views.LibroCreateView.as_view(), name="libro_create"),
+    path('evento-crea/', views.EventoCreateView.as_view(), name='evento_add'),
+    path('eventi-list/', views.EventiList.as_view(), name='eventi_list'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

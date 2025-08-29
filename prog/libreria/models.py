@@ -17,7 +17,7 @@ class Comune(models.Model):
     provincia = models.CharField(max_length=2)
 
     def save(self, *args, **kwargs):
-        self.provincia = self.provincia.upper()  # trasforma in maiuscolo prima di salvare
+        self.provincia = self.provincia.upper()
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -52,7 +52,7 @@ class Utente(AbstractUser):
     comune = models.ForeignKey(Comune, on_delete=models.CASCADE, blank=True, null=True)
     inprovincia = models.BooleanField(default=False)  # Se impostato a True, l'utente scambia in tutta la provincia
     tags = models.ManyToManyField('Tag')
-    autore = models.OneToOneField(Autore, on_delete=models.SET_NULL, blank=True, null=True)
+    autore = models.OneToOneField(Autore, on_delete=models.SET_NULL, blank=True, null=True, related_name="utente")
 
     class Meta:
         verbose_name_plural = 'Utenti'
@@ -62,6 +62,9 @@ class Utente(AbstractUser):
         if self.immagine:
             return self.immagine.url
         return static('img/iconadefault.jpg')
+
+    def is_autore(self):
+        return self.groups.filter(name='Autori').exists()
 
     def save(self, *args, **kwargs):
         is_new = self.pk is None
@@ -158,7 +161,7 @@ class Luogo(models.Model):
 
 class Evento(models.Model):
     idlibro = models.ForeignKey(Libro, on_delete=models.CASCADE)
-    autore = models.ForeignKey(Utente, on_delete=models.CASCADE)
+    autore = models.ForeignKey(Utente, on_delete=models.CASCADE, related_name="eventi")
     luogo = models.ForeignKey(Luogo, on_delete=models.CASCADE)
     date = models.DateField()
     descrizione = models.TextField(blank=True, null=True)

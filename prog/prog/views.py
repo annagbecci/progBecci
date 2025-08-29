@@ -1,14 +1,20 @@
-from django.views.generic import CreateView
+from libreria.forms import *
+from django.views.generic import CreateView, ListView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from libreria.forms import *
-from braces.views import LoginRequiredMixin
+from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from django_select2.forms import ModelSelect2MultipleWidget
+from braces.views import LoginRequiredMixin, GroupRequiredMixin
 from dal import autocomplete
+
+User = get_user_model()
 
 
 def home(request):
+    scrittori = User.objects.filter(groups__name="Autori")
     categorie = []
     for tag in Tag.objects.all():
         libri = tag.libro_set.all()[:4]  # primi 4 libri: CAMBIARE ORDINE
@@ -20,7 +26,8 @@ def home(request):
             })
 
     ctx = {
-        "title": "HomeDiAnnaB",
+        "autori": scrittori,
+        "title": "Home page",
         "categorie": categorie
     }
 
@@ -89,7 +96,6 @@ def update_utente(request):
             messages.error(request, "Ci sono errori, controlla i campi.")
 
     else:
-        # Prepopola il formset con i link attuali dell'utente
         formset = LinkFormSet(queryset=utente.links.all())
         form = UtenteUpdateForm(instance=utente)
 
@@ -130,7 +136,7 @@ class AutoreAutocomplete(autocomplete.Select2QuerySetView):
         return qs
 
 
-class AutoreWidget(ModelSelect2MultipleWidget): # DOVREI AGGIUNGERE UN CONTROLLO SULL'ACCESSO
+class AutoreWidget(ModelSelect2MultipleWidget):  # DOVREI AGGIUNGERE UN CONTROLLO SULL'ACCESSO
     model = Autore
     search_fields = ["nome__icontains"]
 
@@ -143,3 +149,40 @@ class LibroCreateView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse_lazy('risultati_ricerca')
 
+
+class EventoCreateView(GroupRequiredMixin, CreateView):
+    group_required = ["Autori"]
+    form_class = EventoForm
+    template_name = "evento_create.html"
+    success_url = reverse_lazy("eventi_list")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        form.instance.autore = self.request.user
+        return super().form_valid(form)
+
+
+class EventiList(LoginRequiredMixin, ListView):
+    model = Evento
+    template_name = 'eventi_list.html'
+    context_object_name = 'eventi'
+
+    def get_queryset(self):
+        qs = Evento.objects.filter(date__gte=timezone.now()).order_by("date")
+        form = EventiFilterForm(self.request.GET)
+
+        if form.is_valid():
+            provincia = form.cleaned_data.get('provincia')
+            if provincia:
+                qs = qs.filter(luogo__comune__provincia=provincia)
+
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filter_form'] = EventiFilterForm(self.request.GET)
+        return context

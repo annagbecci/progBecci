@@ -1,0 +1,39 @@
+{% extends "w3base.html" %}
+{% load crispy_forms_filters %}
+{% load static %}
+
+{% block title %}Scopri gli eventi{% endblock %}
+
+{% block content %}
+    <h1>Tutti gli eventi programmati dagli autori</h1>
+
+
+    <form method="get" class="mb-4">
+        <div>
+            {{ filter_form.provincia|as_crispy_field }}
+            <button type="submit" class="btn-default w3-round-medium  w3-border w3-border-blue-grey"
+                        style="font-size:1.2em;  width: 140px; text-align: center;
+                        background: #A7D5E1; color:black">Filtra</button>
+        </div>
+    </form>
+
+    <ul style="list-style-type:circle" class="grande">
+        {% for evento in eventi %}
+            <br>
+            <li>
+
+                <strong>{{ evento.date }}</strong> —
+                <a href="{% url 'libreria:autore_detail' evento.autore.autore.pk %}"> {{ evento.autore.autore.nome }}
+                </a> presenta
+                <a href="{% url 'libreria:libro_detail' evento.idlibro.pk %}">"{{ evento.idlibro }}"
+                </a>, a {{ evento.luogo.comune }} ({{ evento.luogo.comune.provincia }}) — {{ evento.luogo.via }}
+
+                {% if evento.descrizione %}
+                    <br>{{ evento.descrizione }}
+                {% endif %}
+            </li>
+        {% empty %}
+            <li>Nessun evento trovato.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

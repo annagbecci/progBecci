@@ -1,11 +1,10 @@
-from libreria.models import *
 from .forms import *
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView, ListView, CreateView
 from django.contrib.auth.decorators import login_required
-from braces.views import LoginRequiredMixin, GroupRequiredMixin
+from braces.views import LoginRequiredMixin
 
 
 @login_required
@@ -92,6 +91,11 @@ class RecensioneCreate(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy('libreria:libro_detail', kwargs={'pk': self.kwargs['pk']})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['pk'] = self.kwargs['pk']
+        return context
 
 
 @login_required
@@ -232,19 +236,3 @@ class ScambiatorePage(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["utente"] = Utente.objects.get(pk=self.kwargs['pk'])
         return context
-
-
-class EventoCreateView(GroupRequiredMixin, CreateView):
-    group_required = ["Autori"]
-    form_class = EventoForm
-    template_name = "libreria/evento_create.html"
-    success_url = reverse_lazy("home_page")
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs["user"] = self.request.user
-        return kwargs
-
-    def form_valid(self, form):
-        form.instance.autore = self.request.user
-        return super().form_valid(form)
