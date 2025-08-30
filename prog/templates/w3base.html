@@ -59,7 +59,7 @@
                 <!-- Right-sided navbar links. Compressa per piccoli e medi schermi. -->
                 <div class="w3-right w3-hide-small w3-hide-medium" style="margin-left:auto;">
 
-                    {% if user.is_authenticated and user.is_autore %}
+                    {% if user.is_autore %}
                         <a href="{% url 'evento_add' %}" class="w3-bar-item w3-button" title="Aggiungi un evento">
                             <i class="far fa-calendar-plus" style='font-size:1.3em'></i>
                         </a>
@@ -73,6 +73,10 @@
 
                     <a href="{% url 'libreria:index' %}" class="w3-bar-item w3-button" title="La tua libreria">
                         <i class="fa fa-book-open-reader" style='font-size:1.3em'></i>
+                    </a>
+
+                    <a href="{% url 'libreria:lista_scambio' %}" class="w3-bar-item w3-button" title="Lista scambio">
+                        <i class="far fa-handshake" style='font-size:1.3em'></i>
                     </a>
 
                     <a href="{% url 'libreria:lista_desideri' %}" class="w3-bar-item w3-button" title="Lista desideri">
@@ -100,20 +104,22 @@
 
             {% include 'navbar_searchbar.html' %}
 
-            {% if user.is_authenticated and user.is_autore %}
+            {% if user.is_autore %}
                 <a href="{% url 'evento_add' %}" class="w3-bar-item w3-button" title="Aggiungi un evento">
                     <i class="far fa-calendar-plus" style='font-size:1.3em; padding: 5px'></i>  Aggiungi un evento
                 </a>
             {% endif %}
 
-            {% if user in autori %}
-                <a href="{% url 'eventi_list' %}" class="w3-bar-item w3-button" title="Aggiungi un evento">
-                    <i class="fas fa-calendar-alt" style='font-size:1.3em; padding: 5px'></i>  Scopri gli eventi
-                </a>
-            {% endif %}
+            <a href="{% url 'eventi_list' %}" class="w3-bar-item w3-button" title="Aggiungi un evento">
+                <i class="fa fa-calendar-alt" style='font-size:1.3em; padding: 5px'></i>  Mostra gli eventi
+            </a>
 
             <a href="{% url 'libreria:index' %}" class="w3-bar-item w3-button" title="La tua libreria">
                 <i class="fa fa-book-open-reader" style='font-size:1.3em; padding: 5px'></i> La tua libreria
+            </a>
+
+            <a href="{% url 'libreria:lista_scambio' %}" class="w3-bar-item w3-button" title="Lista scambio">
+                <i class="far fa-handshake" style='font-size:1.3em; padding: 5px'></i>  Lista scambio
             </a>
 
             <a href="{% url 'libreria:lista_desideri' %}" class="w3-bar-item w3-button">
@@ -131,16 +137,16 @@
 
         <script>
         function toggleMenu() {
-          var menu = document.getElementById("menuMobile");
+            var menu = document.getElementById("menuMobile");
 
-          if (menu.classList.contains("w3-hide")) {
-            menu.classList.remove("w3-hide");
-            setTimeout(() => menu.classList.add("show"), 10);
-          }
-          else {
-            menu.classList.remove("show");
-            setTimeout(() => menu.classList.add("w3-hide"), 300);
-          }
+            if (menu.classList.contains("w3-hide")) {
+                menu.classList.remove("w3-hide");
+                setTimeout(() => menu.classList.add("show"), 10);
+            }
+            else {
+                menu.classList.remove("show");
+                setTimeout(() => menu.classList.add("w3-hide"), 300);
+            }
         }
         </script>
 
@@ -163,9 +169,9 @@
 
         <!-- Questo script mi permette di aprire i modal -->
         <script>
-          $(document).ready(function() {
-            $("#modal").modal('show');
-          });
+            $(document).ready(function() {
+                $("#modal").modal('show');
+            });
         </script>
 
         {{ form.media.js }}
