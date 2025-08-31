@@ -15,6 +15,7 @@ User = get_user_model()
 
 def home(request):
     scrittori = User.objects.filter(groups__name="Autori")
+
     categorie = []
     for tag in Tag.objects.all().order_by("nome"):
         libri = tag.libro_set.all()[:3]  # primi 3 libri: CAMBIARE ORDINE
@@ -25,10 +26,25 @@ def home(request):
                 'libri': libri
             })
 
+    interessi = []
+    if request.user.is_authenticated:
+        letti = Libro.objects.filter(recensioni__nomeutente=request.user)
+
+        for tag in request.user.tags.all():
+            libri = tag.libro_set.exclude(id__in=letti).order_by("-mediavoti")[:3]
+            if libri.exists():
+                interessi.append({
+                    'id': tag.id,
+                    'nome': tag.nome,
+                    'libri': libri
+                })
+
+
     ctx = {
         "autori": scrittori,
         "title": "Home page",
-        "categorie": categorie
+        "categorie": categorie,
+        "interessi": interessi
     }
 
     return render(request, template_name="hometemplate.html", context=ctx)

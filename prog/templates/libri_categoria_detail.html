@@ -1,8 +1,9 @@
 {% extends "w3base.html" %}
 
-{% block title %} Mostra categoria {%  endblock %}
+{% block title %} {{ tag.nome }} {%  endblock %}
 
 {% block content %}
+    <h1>I libri della categoria {{ tag.nome }}</h1>
     <div class="w3-container">
         {% for libro in libri %}
             <div class="w3-margin-top w3-padding-top-24">

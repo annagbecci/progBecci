@@ -49,7 +49,33 @@
         }
         </script>
 
-        {% if not user.is_authenticated %}
+
+        {% if interessi %}
+            <h2>Ciao {{ user.username }}! <br>
+                Ti consigliamo i libri che potrebbero piacerti e che forse ancora non hai letto</h2>
+            {% for c in interessi %}
+                <div class="w3-margin-top">
+                    <h2><a href="{% url 'libri_categoria_detail' c.id %}" class="w3-text-blue">
+                            {{ c.nome }}</a></h2>
+                    <div class="w3-row-padding">
+                        {% for libro in c.libri %}
+                            <div class="card-container">
+                                <!-- 3 card per riga su schermo l ed m e 1 per riga su schermo s -->
+                                {% include "bookcard.html" %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            {% if not user.isauthenticated %}
+                    <div class="alert alert-warning grande">
+                        <strong>Ciao!</strong>
+                        Quissù trovi un sacco di tasti che portano a delle pagine per cui è richiesto l'accesso :(
+                        <br>Entra a far parte della community per poter personalizzare l'esperienza, scambiare libri e
+                        condividere opinioni con altri lettori <3
+                    </div>
+            {% endif %}
             {% for categoria in categorie %}
                 <div class="w3-margin-top">
                     <h2><a href="{% url 'libri_categoria_detail' categoria.id %}" class="w3-text-blue">
@@ -64,10 +90,6 @@
                     </div>
                 </div>
             {% endfor %}
-        {% else %}
-
-
-
         {% endif %}
     </div>
 
