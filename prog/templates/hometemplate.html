@@ -2,10 +2,52 @@
 
 {% block title %} {{ title }} {%  endblock %}
 
-{% block content %}
+{% block sidebar %}
+    <!-- Sidebar/menu -->
+    <nav class="w3-sidebar w3-collapse w3-large w3-padding w3-hide-small w3-hide-medium>"
+         id="mySidebar"><br>
 
+        <div class="w3-padding-16" style="text-align: left">
+            <h3>Esplora le<br>categorie</h3>
+        </div>
+        <div class="w3-bar-block">
+            {% for categoria in categorie %}
+                <p class="grande"><a href="{% url 'libri_categoria_detail' categoria.id %}" style="color:black;">
+                    {{ categoria.nome }}</a></p>
+            {% endfor %}
+        </div>
+    </nav>
+{% endblock %}
+
+{% block homecontent %}
     <!-- La home page mostra i libri presenti in db, divisi per categoria (tags) -->
-    <div class="w3-container">
+    <div class="home-cont">
+        <!-- Bottone visibile SOLO su schermi piccoli e medi: apre la sidebar-->
+        <button class="w3-button w3-xlarge w3-hide-large" onclick="w3_open()">
+            <h4><i class="fas fa-angle-right"></i> Categorie</h4>
+        </button>
+
+        <!-- Overlay sidebar per schermi medi e piccoli -->
+        <nav id="mobileSidebar" class="w3-sidebar w3-bar-block w3-card w3-animate-left w3-hide-large"
+             style="display:none; background:#FEC5BB; width:200px; position:fixed; top:93px; bottom:0;
+             height:calc(100vh - 93px); overflow-y:auto; z-index:2000;">
+            <button onclick="w3_close()" class="w3-bar-item w3-button"><b>Chiudi ✖</b></button>
+            {% for categoria in categorie %}
+                <a href="{% url 'libri_categoria_detail' categoria.id %}"
+                   class="w3-bar-item w3-button">{{ categoria.nome }}</a>
+            {% endfor %}
+        </nav>
+
+        <script>
+        function w3_open() {
+          document.getElementById("mobileSidebar").style.display = "block";
+        }
+        function w3_close() {
+          document.getElementById("mobileSidebar").style.display = "none";
+        }
+        </script>
+
+
         {% for categoria in categorie %}
             <div class="w3-margin-top">
                 <h2><a href="{% url 'libri_categoria_detail' categoria.id %}" class="w3-text-blue">
@@ -13,7 +55,7 @@
                 <div class="w3-row-padding">
                     {% for libro in categoria.libri %}
                         <div class="card-container">
-                            <!-- 4 card per riga su schermo l, 3 su schermo m e 1 su schermo s -->
+                            <!-- 3 card per riga su schermo l ed m e 1 per riga su schermo s -->
                             {% include "bookcard.html" %}
                         </div>
                     {% endfor %}

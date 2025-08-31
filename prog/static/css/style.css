@@ -1,12 +1,12 @@
 .grande {
-  font-size: 1.2em;
-  line-height: 1.6;
-  margin-bottom: 1em;
+    font-size: 1.2em;
+    line-height: 1.6;
+    margin-bottom: 1em;
 }
 
 .link-classico {
-  color: blue;
-  text-decoration: underline;
+    color: blue;
+    text-decoration: underline;
 }
 
 /* Impostazioni per la navigation bar ed i suoi item */
@@ -29,32 +29,60 @@
 }
 
 .search-container input[type=text] {
-  padding: 15px;
-  margin: 0;
-  background: #dceef3;
-  font-size: 17px;
-  border: none;
-  height: 60px;
-  width: calc(100% - 60px);
+    padding: 15px;
+    margin: 0;
+    background: #dceef3;
+    font-size: 17px;
+    border: none;
+    height: 60px;
+    width: calc(100% - 60px);
 }
 
 .search-container button {
-  float: right;
-  padding: 5px;
-  margin: 0;
-  background: #8dc8d8;
-  font-size: 17px;
-  border: none;
-  cursor: pointer;
-  height: 60px;
-  width: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    float: right;
+    padding: 5px;
+    margin: 0;
+    background: #8dc8d8;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+    height: 60px;
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .search-container button:hover {
-  background: #72bbce;
+    background: #72bbce;
+}
+
+/* Impostazioni per la sidebar delle categorie*/
+/* Desktop: sidebar visibile */
+.home-cont {
+    margin-left: 200px;
+}
+
+/* Tablet e mobile: sidebar nascosta e home-cont a tutto schermo */
+@media screen and (max-width: 992px) {
+    .home-cont {
+        margin-left: 0;
+    }
+}
+
+/* altezza della navbar */
+:root { --nav-h: 93px; }
+
+/* Sidebar fissa con scroll interno */
+#mySidebar.w3-sidebar {
+    position: fixed;
+    top: var(--nav-h) !important;
+    left: 0;
+    width: 200px;
+    height: calc(100vh - var(--nav-h)) !important;
+    overflow-y: auto !important;
+    background: #FEC5BB;
+    z-index: 1;
 }
 
 /* Impostazioni per le card */
@@ -63,9 +91,10 @@
     flex-wrap: wrap;
     gap: 16px; /* Spazio tra le card */
 }
-.card-container { /* desktop - 4 card per riga considerando il gap*/
-    flex: 0 0 calc(25% - 16px); /* sempre 25% */
-    max-width: calc(25% - 16px);
+
+.card-container { /* desktop - 3 card per riga considerando il gap*/
+    flex: 0 0 calc(33% - 16px); /* sempre 25% */
+    max-width: calc(33% - 16px);
     display: flex;
 }
 
@@ -82,24 +111,6 @@
         max-width: 100%; /* 1 card per riga */
     }
 }
-
-/*TOGLI I 3 PROSSIMI
-.card-container {
-    flex: 1 1 calc(25% - 16px);
-    display: flex;
-}
-
-@media (max-width: 992px) {
-    .card-container {
-        flex: 1 1 calc(33.33% - 16px);
-    }
-}
-
-@media (max-width: 600px) {
-    .card-container {
-        flex: 1 1 100%;
-    }
-}*/
 
 .card-equal {
     display: flex;
@@ -140,21 +151,21 @@ textarea {
 
 /* Animazione slide-down del menù su schermo mobile */
 .slide-down {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease-out;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
 }
 
 .slide-down.show {
-  max-height: 200px; /* altezza massima menu */
+    max-height: 200px; /* altezza massima menu */
 }
 
 /* Impostazioni per le immagine profilo piccole nelle card delle recensioni */
 .avatar {
-  width: 40px;        /* larghezza */
-  height: 40px;       /* altezza */
-  border-radius: 50%; /* rende l’immagine rotonda */
-  object-fit: cover;  /* mantiene il ritaglio proporzionato */
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 /* Impostazioni per dividere i tags su più colonne nella pagina di registrazione */
