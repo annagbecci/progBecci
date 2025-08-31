@@ -18,7 +18,7 @@ def home(request):
 
     categorie = []
     for tag in Tag.objects.all().order_by("nome"):
-        libri = tag.libro_set.all()[:3]  # primi 3 libri: CAMBIARE ORDINE
+        libri = tag.libro_set.all().order_by("-mediavoti")[:3]  # primi 3 libri: CAMBIARE ORDINE
         if libri.exists():
             categorie.append({
                 'id': tag.id,

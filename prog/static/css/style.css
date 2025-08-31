@@ -73,7 +73,7 @@
 /* altezza della navbar */
 :root { --nav-h: 93px; }
 
-/* Sidebar fissa con scroll interno */
+/* Sidebar fissa con scroll interno*/
 #mySidebar.w3-sidebar {
     position: fixed;
     top: var(--nav-h) !important;
@@ -83,6 +83,12 @@
     overflow-y: auto !important;
     background: #FEC5BB;
     z-index: 1;
+}
+
+/* Impostazioni footer */
+footer {
+    position: relative;
+    z-index: 10; /* più alto dello z-index della sidebar => il footer la sovrappone */
 }
 
 /* Impostazioni per le card */
