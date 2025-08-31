@@ -16,8 +16,8 @@ User = get_user_model()
 def home(request):
     scrittori = User.objects.filter(groups__name="Autori")
     categorie = []
-    for tag in Tag.objects.all():
-        libri = tag.libro_set.all()[:3]  # primi 4 libri: CAMBIARE ORDINE
+    for tag in Tag.objects.all().order_by("nome"):
+        libri = tag.libro_set.all()[:3]  # primi 3 libri: CAMBIARE ORDINE
         if libri.exists():
             categorie.append({
                 'id': tag.id,

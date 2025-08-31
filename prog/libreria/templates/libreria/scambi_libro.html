@@ -4,39 +4,37 @@
 {% block title %}Contatta uno scambiatore{% endblock %}
 
 {% block content %}
-    <div class="w3-container">
-        <h1>Ecco la lista di utenti che vogliono scambiare questo libro</h1>
+    <h1>Ecco la lista di utenti che vogliono scambiare questo libro</h1>
 
-        {% if scambi %}
-            {% if stessa_provincia %}
-                <div class="w3-margin-top">
-                    <h2>Vicino a te:</h2>
-                    <div class="w3-row-padding">
-                        {% for item in stessa_provincia %}
-                            <div class="card-container">
-                                {% include "libreria/scambiatori_card.html" %}
-                            </div>
-                        {% endfor %}
-                    </div>
+    {% if scambi %}
+        {% if stessa_provincia %}
+            <div class="w3-margin-top">
+                <h2>Vicino a te:</h2>
+                <div class="w3-row-padding">
+                    {% for item in stessa_provincia %}
+                        <div class="card-container">
+                            {% include "libreria/scambiatori_card.html" %}
+                        </div>
+                    {% endfor %}
                 </div>
-            {% endif %}
-
-            {% if altra_provincia %}
-                <div class="w3-margin-top">
-                    <h2>In tutta Italia:</h2>
-                    <div class="w3-row-padding">
-                        {% for item in altra_provincia %}
-                            <div class="card-container">
-                                {% include "libreria/scambiatori_card.html" %}
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            {% endif %}
-
-        {% else %}
-            <h2><br>Ancora nessuno è pronto a separarsi da questo libro...</h2>
+            </div>
         {% endif %}
-    </div>
+
+        {% if altra_provincia %}
+            <div class="w3-margin-top">
+                <h2>In tutta Italia:</h2>
+                <div class="w3-row-padding">
+                    {% for item in altra_provincia %}
+                        <div class="card-container">
+                            {% include "libreria/scambiatori_card.html" %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+    {% else %}
+        <h2><br>Ancora nessuno è pronto a separarsi da questo libro...</h2>
+    {% endif %}
 
 {% endblock %}

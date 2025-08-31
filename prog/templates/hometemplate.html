@@ -12,8 +12,8 @@
         </div>
         <div class="w3-bar-block">
             {% for categoria in categorie %}
-                <p class="grande"><a href="{% url 'libri_categoria_detail' categoria.id %}" style="color:black;">
-                    {{ categoria.nome }}</a></p>
+                <a href="{% url 'libri_categoria_detail' categoria.id %}"
+                   class="w3-bar-item w3-button">{{ categoria.nome }}</a>
             {% endfor %}
         </div>
     </nav>
@@ -31,7 +31,9 @@
         <nav id="mobileSidebar" class="w3-sidebar w3-bar-block w3-card w3-animate-left w3-hide-large"
              style="display:none; background:#FEC5BB; width:200px; position:fixed; top:93px; bottom:0;
              height:calc(100vh - 93px); overflow-y:auto; z-index:2000;">
-            <button onclick="w3_close()" class="w3-bar-item w3-button"><b>Chiudi ✖</b></button>
+            <button onclick="w3_close()" class="w3-bar-item w3-button">
+                <i class="far fa-window-close"></i><b>Chiudi</b>
+            </button>
             {% for categoria in categorie %}
                 <a href="{% url 'libri_categoria_detail' categoria.id %}"
                    class="w3-bar-item w3-button">{{ categoria.nome }}</a>
@@ -47,21 +49,26 @@
         }
         </script>
 
-
-        {% for categoria in categorie %}
-            <div class="w3-margin-top">
-                <h2><a href="{% url 'libri_categoria_detail' categoria.id %}" class="w3-text-blue">
-                        {{ categoria.nome }}</a></h2>
-                <div class="w3-row-padding">
-                    {% for libro in categoria.libri %}
-                        <div class="card-container">
-                            <!-- 3 card per riga su schermo l ed m e 1 per riga su schermo s -->
-                            {% include "bookcard.html" %}
-                        </div>
-                    {% endfor %}
+        {% if not user.is_authenticated %}
+            {% for categoria in categorie %}
+                <div class="w3-margin-top">
+                    <h2><a href="{% url 'libri_categoria_detail' categoria.id %}" class="w3-text-blue">
+                            {{ categoria.nome }}</a></h2>
+                    <div class="w3-row-padding">
+                        {% for libro in categoria.libri %}
+                            <div class="card-container">
+                                <!-- 3 card per riga su schermo l ed m e 1 per riga su schermo s -->
+                                {% include "bookcard.html" %}
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        {% else %}
+
+
+
+        {% endif %}
     </div>
 
     {% if user.is_authenticated and "ok" in request.GET.login %}

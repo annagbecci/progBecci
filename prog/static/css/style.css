@@ -58,9 +58,9 @@
 }
 
 /* Impostazioni per la sidebar delle categorie*/
-/* Desktop: sidebar visibile */
+/* Desktop: sidebar visibile e home-cont ristretto */
 .home-cont {
-    margin-left: 200px;
+    margin-left: 250px;
 }
 
 /* Tablet e mobile: sidebar nascosta e home-cont a tutto schermo */
@@ -78,7 +78,7 @@
     position: fixed;
     top: var(--nav-h) !important;
     left: 0;
-    width: 200px;
+    width: 250px;
     height: calc(100vh - var(--nav-h)) !important;
     overflow-y: auto !important;
     background: #FEC5BB;
