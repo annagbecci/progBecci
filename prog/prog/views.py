@@ -9,8 +9,22 @@ from django.utils import timezone
 from django_select2.forms import ModelSelect2MultipleWidget
 from braces.views import LoginRequiredMixin, GroupRequiredMixin
 from dal import autocomplete
+from .rec_sys import cosine_similarity
 
 User = get_user_model()
+
+
+def utenti_simili_cosine(utente):
+    risultati = []
+    for altro in Utente.objects.exclude(id=utente.id).filter(links__isnull=False).distinct():
+        score = cosine_similarity(utente, altro)
+        if score >= 0.4:
+            risultati.append((altro, score))
+
+    # Ordino per similarità decrescente
+    risultati.sort(key=lambda x: x[1], reverse=True)
+
+    return risultati[:4]
 
 
 def home(request):
@@ -39,12 +53,16 @@ def home(request):
                     'libri': libri
                 })
 
+    utenti_simili = []
+    if request.user.is_authenticated:
+        utenti_simili = utenti_simili_cosine(request.user)
 
     ctx = {
         "autori": scrittori,
         "title": "Home page",
         "categorie": categorie,
-        "interessi": interessi
+        "interessi": interessi,
+        "simili": utenti_simili,
     }
 
     return render(request, template_name="hometemplate.html", context=ctx)

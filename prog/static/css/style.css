@@ -57,10 +57,21 @@
     background: #72bbce;
 }
 
+/* Animazione slide-down del menù su schermo mobile */
+.slide-down {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.slide-down.show {
+    max-height: 200px; /* altezza massima menu */
+}
+
 /* Impostazioni per la sidebar delle categorie*/
 /* Desktop: sidebar visibile e home-cont ristretto */
 .home-cont {
-    margin-left: 250px;
+    margin-left: 200px;
 }
 
 /* Tablet e mobile: sidebar nascosta e home-cont a tutto schermo */
@@ -78,10 +89,10 @@
     position: fixed;
     top: var(--nav-h) !important;
     left: 0;
-    width: 250px;
+    width: 200px;
     height: calc(100vh - var(--nav-h)) !important;
     overflow-y: auto !important;
-    background: #FEC5BB;
+    background: #FCD5CE;
     z-index: 1;
 }
 
@@ -99,7 +110,7 @@ footer {
 }
 
 .card-container { /* desktop - 3 card per riga considerando il gap*/
-    flex: 0 0 calc(33% - 16px); /* sempre 25% */
+    flex: 0 0 calc(33% - 16px);
     max-width: calc(33% - 16px);
     display: flex;
 }
@@ -126,6 +137,25 @@ footer {
     box-sizing: border-box;
 }
 
+.user-card-container {
+    flex: 0 0 calc(25% - 16px);
+    max-width: calc(25% - 16px);
+    display: flex;
+}
+
+@media (max-width: 992px) { /* tablet */
+    .user-card-container {
+        flex: 0 0 calc(50% - 16px);
+        max-width: calc(50% - 16px); /* 3 card per riga */
+    }
+}
+
+@media (max-width: 600px) { /* mobile */
+    .user-card-container {
+        flex: 0 0 100%;
+        max-width: 100%; /* 1 card per riga */
+    }
+}
 /* Impostazioni per le recensioni */
 .star, .star-input {
     padding: 1px;
@@ -150,20 +180,10 @@ footer {
     color: gold;
 }
 
+/* Dettaglio text area per i form */
 textarea {
     width: 100%;
     resize: vertical;
-}
-
-/* Animazione slide-down del menù su schermo mobile */
-.slide-down {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease-out;
-}
-
-.slide-down.show {
-    max-height: 200px; /* altezza massima menu */
 }
 
 /* Impostazioni per le immagine profilo piccole nelle card delle recensioni */

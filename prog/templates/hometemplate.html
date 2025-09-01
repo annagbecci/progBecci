@@ -29,7 +29,7 @@
 
         <!-- Overlay sidebar per schermi medi e piccoli -->
         <nav id="mobileSidebar" class="w3-sidebar w3-bar-block w3-card w3-animate-left w3-hide-large"
-             style="display:none; background:#FEC5BB; width:200px; position:fixed; top:93px; bottom:0;
+             style="display:none; background:#FCD5CE; width:200px; position:fixed; top:93px; bottom:0;
              height:calc(100vh - 93px); overflow-y:auto; z-index:2000;">
             <button onclick="w3_close()" class="w3-bar-item w3-button">
                 <i class="far fa-window-close"></i><b>Chiudi</b>
@@ -67,9 +67,41 @@
                     </div>
                 </div>
             {% endfor %}
+
+            {% if simili %}
+                <h2><br>Abbiamo pensato che sarebbe bello fare rete!</h2>
+                <h3>Ti suggeriamo gli utenti che pensiamo abbiano qualcosa in comune con te</h3>
+
+                <div class="alert alert-info grande" style="max-width: 95%; margin: 35px auto;">
+                    <strong>Come facciamo?</strong>
+                    Usiamo un algoritmo che calcola un punteggio da 0 a 1 per dire quanto avete in comune
+                    sulla base degli interessi che avete scelto :)
+                    <br>Ti mostriamo solo quelli con un punteggio maggiore o uguale a 0.4
+                </div>
+                <div class="w3-row-padding">
+                        {% for altro, score in simili %}
+                            <div class="user-card-container">
+                                <div class="w3-card-2 card-equal" style="text-align:center; width: 100%">
+                                    <header class="w3-container"
+                                            style="padding: 15px; display: flex; background: #FCD5CE">
+                                        <img src="{{ altro.immagine_url }}" alt="Immagine profilo" class="avatar">
+                                        <a href="{% url 'libreria:scambi_utente' pk=altro.pk %}">
+                                            <h3 style="margin-left: 10px;"> {{ altro.username }}</h3>
+                                        </a>
+                                    </header>
+                                    <div class="w3-container" style="padding: 15px;">
+                                        <p class="grande">Affinità: {{ score|floatformat:2 }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                </div>
+
+            {% endif %}
+
         {% else %}
             {% if not user.isauthenticated %}
-                    <div class="alert alert-warning grande">
+                    <div class="alert alert-info grande">
                         <strong>Ciao!</strong>
                         Quissù trovi un sacco di tasti che portano a delle pagine per cui è richiesto l'accesso :(
                         <br>Entra a far parte della community per poter personalizzare l'esperienza, scambiare libri e

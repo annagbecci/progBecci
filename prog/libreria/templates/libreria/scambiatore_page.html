@@ -1,28 +1,36 @@
 {% extends "w3base.html" %}
 {% load static %}
 
-{% block title %}Dettagli dell'utente{% endblock %}
+{% block title %}{{ utente.username }}{% endblock %}
 
 {% block content %}
-    <h1>Qui trovi i libri che {{ utente.username }} vuole scambiare</h1>
-    <div class="w3-container" style="padding: 15px;">
-        {% if utente.inprovincia %}
-            <h3>Scambia a {{ utente.comune }} e nella provincia ({{ utente.comune.provincia }})<br></h3>
-        {% else %}
-            <h3>Scambia solo nel comune di {{ utente.comune }} ({{ utente.comune.provincia }})</h3>
-        {% endif %}
-        <p class="grande">Puoi contattare {{ utente.username }} ai seguenti link:<br>
-            {% for l in utente.links.all %}
-                <a href="{{ l.link_social }}" target="_blank" rel="noopener noreferrer">
-                    {{ l.nome }}
-                </a>{% if not forloop.last %}, {% endif %}
-            {% endfor %}
-        </p>
-    </div>
+    <h1>Questo è il profilo di {{ utente.username }}</h1>
+    <p style="font-size: 1.4em">Contattami ai seguenti link:
+        {% for l in utente.links.all %}
+            <a href="{{ l.link_social }}" target="_blank" rel="noopener noreferrer">
+                {{ l.nome }}
+            </a>{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    </p>
+    <br>
+    {% if disponibili %}
+        <h2>Qui trovi i libri che {{ utente.username }} vuole scambiare</h2>
+        <div class="w3-container" style="padding: 15px;">
+            {% if utente.inprovincia %}
+                <h3>Scambia a {{ utente.comune }} e nella provincia ({{ utente.comune.provincia }})<br></h3>
+            {% else %}
+                <h3>Scambia solo nel comune di {{ utente.comune }} ({{ utente.comune.provincia }})</h3>
+            {% endif %}
+        </div>
 
-    {% for scambio in disponibili %}
-        {% include 'bookcard.html' with libro=scambio.idlibro %}
-        <br>
-    {% endfor %}
+        {% for scambio in disponibili %}
+            {% include 'bookcard.html' with libro=scambio.idlibro %}
+            <br>
+        {% endfor %}
+    {% else %}
+        <h2>Non ci sono libri da scambiare...</h2>
+        <h3>Contatta {{ utente.username }} ai suoi link e scopri cosa sta leggendo :) </h3>
+    {% endif %}
+
 
 {% endblock %}
