@@ -3,7 +3,6 @@
 {% block title %} {{ title }} {%  endblock %}
 
 {% block sidebar %}
-    <!-- Sidebar/menu -->
     <nav class="w3-sidebar w3-collapse w3-large w3-padding w3-hide-small w3-hide-medium>"
          id="mySidebar"><br>
 
@@ -20,7 +19,6 @@
 {% endblock %}
 
 {% block homecontent %}
-    <!-- La home page mostra i libri presenti in db, divisi per categoria (tags) -->
     <div class="home-cont">
         <!-- Bottone visibile SOLO su schermi piccoli e medi: apre la sidebar-->
         <button class="w3-button w3-xlarge w3-hide-large" onclick="w3_open()">
@@ -60,7 +58,6 @@
                     <div class="w3-row-padding">
                         {% for libro in c.libri %}
                             <div class="card-container">
-                                <!-- 3 card per riga su schermo l ed m e 1 per riga su schermo s -->
                                 {% include "bookcard.html" %}
                             </div>
                         {% endfor %}
@@ -79,26 +76,23 @@
                     <br>Ti mostriamo solo quelli con un punteggio maggiore o uguale a 0.4
                 </div>
                 <div class="w3-row-padding">
-                        {% for altro, score in simili %}
-                            <div class="user-card-container">
-                                <div class="w3-card-2 card-equal" style="text-align:center; width: 100%">
-                                    <header class="w3-container"
-                                            style="padding: 15px; display: flex; background: #FCD5CE">
-                                        <img src="{{ altro.immagine_url }}" alt="Immagine profilo" class="avatar">
-                                        <a href="{% url 'libreria:scambi_utente' pk=altro.pk %}">
-                                            <h3 style="margin-left: 10px;"> {{ altro.username }}</h3>
-                                        </a>
-                                    </header>
-                                    <div class="w3-container" style="padding: 15px;">
-                                        <p class="grande">Affinità: {{ score|floatformat:2 }}</p>
-                                    </div>
+                    {% for altro, score in simili %}
+                        <div class="user-card-container">
+                            <div class="w3-card-2 card-equal" style="text-align:center; width: 100%">
+                                <header class="w3-container" style="padding: 15px; display: flex; background: #FCD5CE">
+                                    <img src="{{ altro.immagine_url }}" alt="Immagine profilo" class="avatar">
+                                    <a href="{% url 'libreria:scambi_utente' pk=altro.pk %}">
+                                        <h3 style="margin-left: 10px;"> {{ altro.username }}</h3>
+                                    </a>
+                                </header>
+                                <div class="w3-container" style="padding: 15px;">
+                                    <p class="grande">Affinità: {{ score|floatformat:2 }}</p>
                                 </div>
                             </div>
-                        {% endfor %}
+                        </div>
+                    {% endfor %}
                 </div>
-
             {% endif %}
-
         {% else %}
             {% if not user.isauthenticated %}
                     <div class="alert alert-info grande">
@@ -115,7 +109,6 @@
                     <div class="w3-row-padding">
                         {% for libro in categoria.libri %}
                             <div class="card-container">
-                                <!-- 3 card per riga su schermo l ed m e 1 per riga su schermo s -->
                                 {% include "bookcard.html" %}
                             </div>
                         {% endfor %}
@@ -125,38 +118,8 @@
         {% endif %}
     </div>
 
-    {% if user.is_authenticated and "ok" in request.GET.login %}
-        <div id="modal" class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h5 class="modal-title"><strong>Ciao {{ user.username }}</strong></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        <p class="grande">Il login è andato a buon fine!</p>
-                    </div>
-
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-danger" data-dismiss="modal">Chiudi</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <script>
-            $(document).ready(function() {
-                $("#modal").modal('show');
-            });
-        </script>
-
+    {% if user.is_authenticated and request.GET.login == "ok" %}
+        {% include "login_modal.html" %}
     {% endif %}
 
 {% endblock %}

@@ -4,6 +4,8 @@
 {% block title %} {{ "La tua area personale" }} {% endblock %}
 
 {% block content %}
+    {% include "modal.html" %}
+
     <h1>I tuoi dati - {{ utente.username }}</h1>
     <div class="w3-container w3-padding-16 grande">
         {% if utente.email %}
@@ -56,7 +58,4 @@
         <a href="{% url 'utente_update' %}" class="btn-default w3-round-medium w3-border w3-border-red"
            style="font-size:1.3em; padding:20px 30px; background: #FEC5BB; color:black">Modifica profilo</a>
     </div>
-
-
-    
 {% endblock %}

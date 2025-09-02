@@ -30,16 +30,6 @@ class UtenteDetail(LoginRequiredMixin, DetailView):
         return self.request.user
 
 
-class UtenteList(ListView):
-    model = Utente
-    template_name = 'libreria/utente_list.html'
-
-
-class AutoreList(ListView):
-    model = Autore
-    template_name = 'libreria/autore_list.html'
-
-
 class AutoreDetail(DetailView):
     model = Autore
     template_name = 'libreria/autore_detail.html'
@@ -186,6 +176,7 @@ class NotaCreateView(LoginRequiredMixin, CreateView):
         return context
 
 
+"""Questa view crea una lista degli utenti disponibili a cedere un dato libro (passato come valore)"""
 class LibroScambioListView(LoginRequiredMixin, ListView):
     model = ListaScambio
     template_name = "libreria/scambi_libro.html"
@@ -224,6 +215,7 @@ class LibroScambioListView(LoginRequiredMixin, ListView):
         return context
 
 
+"""Questa view crea una lista dei libri che un dato utente  vuole scambiare"""
 class ScambiatorePage(LoginRequiredMixin, ListView):
     model = ListaScambio
     template_name = "libreria/scambiatore_page.html"

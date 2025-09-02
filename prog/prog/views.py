@@ -21,8 +21,7 @@ def utenti_simili_cosine(utente):
         if score >= 0.4:
             risultati.append((altro, score))
 
-    # Ordino per similarità decrescente
-    risultati.sort(key=lambda x: x[1], reverse=True)
+    risultati.sort(key=lambda x: x[1], reverse=True)  # Ordino per similarità decrescente
 
     return risultati[:4]
 
@@ -32,7 +31,7 @@ def home(request):
 
     categorie = []
     for tag in Tag.objects.all().order_by("nome"):
-        libri = tag.libro_set.all().order_by("-mediavoti")[:3]  # primi 3 libri: CAMBIARE ORDINE
+        libri = tag.libro_set.all().order_by("-mediavoti")[:3]  # primi 3 libri: QUELLI CON VOTO MAGGIORE
         if libri.exists():
             categorie.append({
                 'id': tag.id,
@@ -170,7 +169,7 @@ class AutoreAutocomplete(autocomplete.Select2QuerySetView):
         return qs
 
 
-class AutoreWidget(ModelSelect2MultipleWidget):  # DOVREI AGGIUNGERE UN CONTROLLO SULL'ACCESSO
+class AutoreWidget(ModelSelect2MultipleWidget):
     model = Autore
     search_fields = ["nome__icontains"]
 

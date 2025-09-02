@@ -51,53 +51,6 @@
         </h4>
     </a>
 
-    <!-- Gestione dei modal che si aprono alla modifica di lista desideri o scambio -->
-    {% if messages %}
-      {% for message in messages %}
-        {% if "ld" in message.tags %}
-          <div id="msg-ld-modal" class="w3-modal" style="display:block;">
-            <div class="w3-modal-content w3-animate-top w3-card-4">
-              <header class="w3-container" style="background: #8DC8D8; padding:3%">
-                <span onclick="document.getElementById('msg-ld-modal').style.display='none'"
-                      class="w3-button w3-display-topright">&times;</span>
-                <h2>Notifica</h2>
-              </header>
-              <div class="w3-container grande" style="padding: 3%">
-                <p>{{ message }}</p>
-                <div class="w3-container" style="margin-top: 15px;">
-                  <a href="{% url 'libreria:lista_desideri' %}">
-                    <button class="w3-button w3-round-large w3-right" style="background: #DCEEF3;">
-                      Vai alla lista desideri
-                    </button>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        {% elif "ls" in message.tags %}
-          <div id="msg-ls-modal" class="w3-modal" style="display:block;">
-            <div class="w3-modal-content w3-animate-top w3-card-4">
-              <header class="w3-container" style="background: #8DC8D8; padding:3%">
-                <span onclick="document.getElementById('msg-ls-modal').style.display='none'"
-                      class="w3-button w3-display-topright">&times;</span>
-                <h2>Notifica</h2>
-              </header>
-              <div class="w3-container grande" style="padding: 3%">
-                <p>{{ message }}</p>
-                <div class="w3-container" style="margin-top: 15px;">
-                  <a href="{% url 'libreria:lista_scambio' %}">
-                    <button class="w3-button w3-round-large w3-right" style="background: #DCEEF3;">
-                      Vai alla lista di scambio
-                    </button>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        {% endif %}
-      {% endfor %}
-    {% endif %}
-
     <br>
     <div class="w3-bar" style="background: #FEC5BB">
         <div class="w3-bar-item"><h4>La trama</h4></div>
