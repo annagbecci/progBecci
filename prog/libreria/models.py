@@ -76,6 +76,7 @@ class Utente(AbstractUser):
             except Group.DoesNotExist:
                 pass
 
+
 class Libro(models.Model):
     titolo = models.CharField(max_length=100)
     autori = models.ManyToManyField('Autore', related_name='libri')
@@ -102,6 +103,10 @@ class Recensione(models.Model):
     voto = models.IntegerField(default=0, validators=[MinValueValidator(1), MaxValueValidator(5)])
     commento = models.TextField(blank=True, null=True)
     data_aggiunta = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        titolo = f'{self.idlibro},  {self.nomeutente}'
+        return titolo
 
     class Meta:
         verbose_name_plural = 'Recensioni'
