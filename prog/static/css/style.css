@@ -156,6 +156,7 @@ footer {
         max-width: 100%; /* 1 card per riga */
     }
 }
+
 /* Impostazioni per le recensioni */
 .star, .star-input {
     padding: 1px;

@@ -2,12 +2,11 @@
 {% load static %}
 {% load crispy_forms_filters %}
 
-{% block title %} {{ "Crea il tuo profilo" }} {% endblock %}
+{% block title %}Crea il tuo profilo{% endblock %}
 
 {% block content %}
     <h2>Registrati per far parte della community!</h2>
     <br>
-
     <form method="post" action="" enctype="multipart/form-data">
         {% csrf_token %}
 

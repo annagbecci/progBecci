@@ -76,6 +76,7 @@ class RecensioneCreate(LoginRequiredMixin, CreateView):
         response = super().form_valid(form)
 
         libro.aggiorna_valutazione(form.instance.voto)
+        messages.success(self.request, "Recensione aggiunta con successo!")
 
         return response
 

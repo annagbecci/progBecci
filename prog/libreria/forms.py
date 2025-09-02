@@ -113,13 +113,6 @@ class RecensioneForm(forms.ModelForm):
         self.helper.add_input(Submit('submit', 'Invia'))
 
 
-"""
-class AutoreWidget(ModelSelect2MultipleWidget):
-    model = Autore
-    search_fields = ["nome__icontains", "cognome__icontains"]  # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-"""
-
-
 class LibroForm(forms.ModelForm):
     class Meta:
         model = Libro
@@ -183,6 +176,6 @@ class EventiFilterForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # Province disponibili
+        # Province con eventi futuri
         province = Luogo.objects.values_list('comune__provincia', flat=True).filter(evento__date__gte=timezone.now()).distinct()
         self.fields['provincia'].choices = [('', 'Tutte')] + [(p, p) for p in province]

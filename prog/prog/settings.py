@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'libreria',
+    'libreria.apps.LibreriaConfig',
     'crispy_forms',
     "crispy_bootstrap4",
     "django_select2",
@@ -113,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_REDIRECT_URL = '/?login=ok'  # Distinzione tra utente registrato o no
+LOGIN_REDIRECT_URL = '/?login=ok'
 
 # Distinzione tra utente che arriva alla pagina volontariamente o perché non registrato
 LOGIN_URL = '/login/?auth=notok'

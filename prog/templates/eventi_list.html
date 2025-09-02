@@ -21,7 +21,6 @@
         {% for evento in eventi %}
             <br>
             <li>
-
                 <strong>{{ evento.date }}</strong> —
                 <a href="{% url 'libreria:autore_detail' evento.autore.autore.pk %}"> {{ evento.autore.autore.nome }}
                 </a> presenta

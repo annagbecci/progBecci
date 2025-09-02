@@ -3,7 +3,6 @@ from libreria.models import Utente, Tag
 
 
 def cosine_similarity(user1, user2):
-    # Lista di tutti i tag esistenti
     all_tags = list(Tag.objects.values_list("id", flat=True))
 
     # Vettore binario per user1: quello autenticato
@@ -30,5 +29,3 @@ def cosine_similarity(user1, user2):
     - numeratore: quanti tag hanno in comune (prod scalare)
     - denominatore: quanto sono "lunghi" i  profili (NORMALIZZAZIONE)"""
     return dot_product / norm
-
-

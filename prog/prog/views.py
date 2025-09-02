@@ -152,6 +152,11 @@ class AutoreCreateView(LoginRequiredMixin, CreateView):
     fields = ['nome', 'biografia']
     template_name = 'autore_create.html'
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "Autore creato con successo!")
+        return response
+
     def get_success_url(self):
         return reverse_lazy('risultati_ricerca')
 
@@ -179,6 +184,11 @@ class LibroCreateView(LoginRequiredMixin, CreateView):
     form_class = LibroForm
     template_name = 'libro_add.html'
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, "Libro creato con successo!")
+        return response
+
     def get_success_url(self):
         return reverse_lazy('risultati_ricerca')
 
@@ -196,7 +206,9 @@ class EventoCreateView(GroupRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.autore = self.request.user
-        return super().form_valid(form)
+        response = super().form_valid(form)
+        messages.success(self.request, "Evento creato con successo!")
+        return response
 
 
 class EventiList(LoginRequiredMixin, ListView):

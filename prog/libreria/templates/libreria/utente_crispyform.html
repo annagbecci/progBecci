@@ -7,27 +7,26 @@
     <link rel="stylesheet" type="text/css" href='{% static "/css/style.css" %}'>
 {% endblock %}
 
-{% block title %} {{ "Nuovo profilo utente" }} {% endblock %}
+{% block title %}Nuovo profilo utente{% endblock %}
 
 {% block content %}
     <h2>Crea il tuo profilo</h2>
 
+    <form method="post">
+        {% csrf_token %}
 
-<form method="post">
-    {% csrf_token %}
+        <!-- Form utente -->
+        {% crispy utente_form %}
 
-    <!-- Form utente -->
-    {% crispy utente_form %}
+        <!-- Formset dei link -->
+        {{ link_formset.management_form }}
+        {% for form in link_formset %}
+            <div class="link-form">
+                {% crispy form %}
+            </div>
+        {% endfor %}
 
-    <!-- Formset dei link -->
-    {{ link_formset.management_form }}
-    {% for form in link_formset %}
-        <div class="link-form">
-            {% crispy form %}
-        </div>
-    {% endfor %}
-
-    <button type="submit">Salva</button>
-</form>
+        <button type="submit">Salva</button>
+    </form>
 
 {% endblock %}
